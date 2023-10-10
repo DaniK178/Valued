@@ -1,5 +1,5 @@
 import pydantic as _pydantic
-from datetime import datetime, date
+import datetime as _dt
 
 class _BaseUser(_pydantic.BaseModel):
     user_name: str
@@ -12,16 +12,21 @@ class User(_BaseUser):
     class Config:
         from_attributes = True
 
+class CreateUser(_BaseUser):
+    pass
+
 class _BaseConversation(_pydantic.BaseModel):
     user_id: int
-    conversation_date: date
-    conversation_time: datetime
     conversation_content: str
     conversation_topics: str
     conversation_sentiment: int
 
 class Conversation(_BaseConversation):
     id: int 
-
+    conversation_date_time: _dt.datetime
+    
     class Config:
         from_attributes = True
+
+class CreateConversation(_BaseConversation):
+    pass

@@ -15,15 +15,28 @@ def _connect_to_database():
     finally:
         db.close()
 
-def create_user(user, db) -> _schemas.User:
+def create_user(user: _models.User) -> _schemas.User:
     user = _models.User(**user.dict())
     db = _db.SessionLocal()
 
     db.add(user)
     db.commit()
     db.refresh(user)
+    db.close()
 
     return _schemas.User.from_orm(user)
 
+def create_conversation(conversation: _models.Conversation) -> _schemas.Conversation:
+    conversation_obj = _models.Conversation(**conversation.dict())
+    print(conversation, conversation_obj)
+    db = _db.SessionLocal()
+
+    db.add(conversation_obj)
+    db.commit()
+    db.refresh(conversation_obj)
+    db.close()
+
+    return _schemas.Conversation.from_orm(conversation_obj)
+
 if __name__ == "__main__":
-    _setup_tables()
+    # _setup_tables()
