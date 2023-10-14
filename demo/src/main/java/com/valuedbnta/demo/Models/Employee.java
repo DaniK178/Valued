@@ -11,7 +11,7 @@ public class Employee {
 
     private String manager;
 
-    private List<Message> sentMessages;
+    private List<SentPrompt> sentPrompts;
 
     public Employee() {
     }
@@ -20,7 +20,7 @@ public class Employee {
         this.name = name;
         this.email = email;
         this.manager = manager;
-        this.sentMessages = new ArrayList<>();
+        this.sentPrompts = new ArrayList<>();
     }
 
     public String getName() {
@@ -47,11 +47,11 @@ public class Employee {
         this.manager = manager;
     }
 
-    public List<Message> getSentMessages() {
-        return sentMessages;
+    public List<SentPrompt> getSentMessages() {
+        return sentPrompts;
     }
 
-    public void setSentMessages(List<Message> sentMessages) {
-        this.sentMessages = sentMessages;
+    public void setSentMessages(List<SentPrompt> sentMessages) {
+        this.sentPrompts = sentMessages;
     }
 }

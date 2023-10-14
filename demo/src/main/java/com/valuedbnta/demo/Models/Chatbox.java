@@ -8,16 +8,16 @@ public class Chatbox {
 
  private User user;
 
-    private List<Message> userMessages;
+    private List<SentPrompt> sentPrompts;
 
     private List<String> responses;
 
     public Chatbox() {
     }
 
-    public Chatbox(User user, List<Message> userMessages, List<String> responses) {
+    public Chatbox(User user, List<SentPrompt> sentPrompts, List<String> responses) {
         this.user = user;
-        this.userMessages = userMessages;
+        this.sentPrompts = sentPrompts;
         this.responses = responses;
     }
 
@@ -29,12 +29,12 @@ public class Chatbox {
         this.user = user;
     }
 
-    public List<Message> getUserMessages() {
-        return userMessages;
+    public List<SentPrompt> getSentPrompts() {
+        return sentPrompts;
     }
 
-    public void setUserMessages(List<Message> userMessages) {
-        this.userMessages = userMessages;
+    public void setSentPrompts(List<SentPrompt> sentPrompts) {
+        this.sentPrompts = sentPrompts;
     }
 
     public List<String> getResponses() {
