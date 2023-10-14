@@ -33,9 +33,15 @@ public class CustomBotController {
     }
     //we could also return the entire object using ChatGPTResponse instead of String
 
-//    public String chat(@RequestParam("prompt") String prompt){
-//        ChatGPTRequest request=new ChatGPTRequest(model, prompt);
-//        ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
-//        return chatGPTResponse.getChoices().get(0).getMessage().getContent();
-//    }
+    //ALL OF THESE METHODS BELOW NEED AN INPUT OF THE USERS SENT MESSAGES- to send to chat gpt to analyse
+
+    // get mapping endpoint to get social recommendations
+
+    //get mapping endpoint to get l&D recommendations
+
+    //get mapping endpoint to get disability recommendations
+
+
+    //we dont need to delete or edit recommendations 
+
 }
