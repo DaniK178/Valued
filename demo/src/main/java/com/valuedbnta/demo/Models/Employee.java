@@ -11,7 +11,7 @@ public class Employee {
 
     private String manager;
 
-    private List<SentPrompt> sentPrompts;
+    private List<String> sentPrompts;
 
     public Employee() {
     }
@@ -47,11 +47,12 @@ public class Employee {
         this.manager = manager;
     }
 
-    public List<SentPrompt> getSentMessages() {
+    public List<String> getSentMessages() {
         return sentPrompts;
     }
+    //or use sent prompts calls
 
-    public void setSentMessages(List<SentPrompt> sentMessages) {
+    public void setSentMessages(List<String> sentMessages) {
         this.sentPrompts = sentMessages;
     }
 }

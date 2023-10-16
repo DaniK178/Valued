@@ -1,24 +1,35 @@
 package com.valuedbnta.demo.Models;
 
 import org.apache.catalina.User;
+import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Chatbox {
 
  private User user;
 
-    private List<SentPrompt> sentPrompts;
+    private List<String> sentPrompts;
 
     private List<String> responses;
 
+
+    private HashMap<String, String> conversationHistory;
+
     public Chatbox() {
+        this.sentPrompts = new ArrayList<>();
+        this.responses = new ArrayList<>();
+        this.conversationHistory = new HashMap<>();
     }
 
-    public Chatbox(User user, List<SentPrompt> sentPrompts, List<String> responses) {
+
+    public Chatbox(User user) {
         this.user = user;
-        this.sentPrompts = sentPrompts;
-        this.responses = responses;
+        this.sentPrompts = new ArrayList<>();
+        this.responses = new ArrayList<>();
+        this.conversationHistory = new HashMap<>();
     }
 
     public User getUser() {
@@ -29,11 +40,14 @@ public class Chatbox {
         this.user = user;
     }
 
-    public List<SentPrompt> getSentPrompts() {
+    public List<String> getSentPrompts() {
+        if (sentPrompts == null) {
+            sentPrompts = new ArrayList<>();
+        }
         return sentPrompts;
     }
 
-    public void setSentPrompts(List<SentPrompt> sentPrompts) {
+    public void setSentPrompts(List<String> sentPrompts) {
         this.sentPrompts = sentPrompts;
     }
 
@@ -44,4 +58,14 @@ public class Chatbox {
     public void setResponses(List<String> responses) {
         this.responses = responses;
     }
+
+    public HashMap<String, String> getConversationHistory() {
+        return conversationHistory;
+    }
+
+    public void setConversationHistory(HashMap<String, String> conversationHistory) {
+        this.conversationHistory = conversationHistory;
+    }
+
+    //i can make this set prompt in the future but it needs a date
 }

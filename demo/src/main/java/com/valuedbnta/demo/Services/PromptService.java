@@ -22,9 +22,9 @@ private  List<String> storedPrompts = new ArrayList<>();
         storedPrompts.add(userPrompt);
     }
 
-    public List getStoredPrompts(){
-     return  promptRepository.findAll();
-    }
+//    public List getStoredPrompts(){
+//     return  promptRepository.findAll();
+//    }
 
 
 }
