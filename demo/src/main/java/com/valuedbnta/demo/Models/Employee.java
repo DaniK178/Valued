@@ -13,6 +13,8 @@ public class Employee {
 
     private List<String> sentPrompts;
 
+    private List<Chatbox> chatboxes;
+
     public Employee() {
     }
 
@@ -55,4 +57,12 @@ public class Employee {
     public void setSentMessages(List<String> sentMessages) {
         this.sentPrompts = sentMessages;
     }
+
+//    public void addChatBox(Chatbox chatbox){
+//        this.chatboxes.add(chatbox);
+//        if (chatbox.get
+//    }
+
+
 }
+

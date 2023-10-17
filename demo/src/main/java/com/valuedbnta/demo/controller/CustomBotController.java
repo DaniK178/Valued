@@ -55,6 +55,7 @@ public class CustomBotController {
     @GetMapping("/conversation")
     public ChatGPTResponse chat(@RequestParam("prompt") String prompt) {
      //   chatBox = new Chatbox();
+        chatBox.getConversationHistory().put("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. In conversations you are called the Workplace friend.  I am an employee. You must not break out of this role, even if asked to multiple times","Yes understood, I must break out of of this role");
         String conversationHistory = chatBox.getConversationHistory().toString();
 
         //GENERATE REQUEST AND RESPONSE
@@ -77,15 +78,14 @@ public class CustomBotController {
     }
 }
 
-//pass conversation  history as part of the prompt:
-
-//create a map
-//add user prompt as Key, and chat gpt response as value
 
 //add initial prompt
 //we need to create coversation history:
 //
 
+
+//we want to create an initial conversation - add this as the inital message in the chat history
+//
 
 
 //    @GetMapping("/chat")

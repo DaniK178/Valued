@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Chatbox {
 
- private User user;
+ private Employee user;
 
     private List<String> sentPrompts;
 
@@ -25,18 +25,18 @@ public class Chatbox {
     }
 
 
-    public Chatbox(User user) {
+    public Chatbox(Employee user) {
         this.user = user;
         this.sentPrompts = new ArrayList<>();
         this.responses = new ArrayList<>();
         this.conversationHistory = new HashMap<>();
     }
 
-    public User getUser() {
+    public Employee getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Employee user) {
         this.user = user;
     }
 
@@ -66,6 +66,8 @@ public class Chatbox {
     public void setConversationHistory(HashMap<String, String> conversationHistory) {
         this.conversationHistory = conversationHistory;
     }
+
+
 
     //i can make this set prompt in the future but it needs a date
 }
