@@ -1,0 +1,41 @@
+main .card {
+    margin-bottom: 20px;
+}
+
+.notes-section,
+.saved-notes-section {
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.saved-notes {
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.saved-notes p {
+    margin-bottom: 5px;
+}
+
+button {
+    background-color: #F35B04;
+    border: #F35B04;
+    color: white;
+    padding: 7px;
+}
+
+
+hr {
+    border: 0;
+    height: 3px !important; 
+    background: #F7B801; 
+    margin: 20px 0;
+}

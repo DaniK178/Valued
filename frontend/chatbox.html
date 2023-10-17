@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valued</title>
+    <link rel="stylesheet" href="homePage.css">
+    <link rel="stylesheet" href="chatbox.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body class="bg-light custom-mt">
+    <nav class="fixed-top">
+        <div class="container">
+          <h1><img class="logo" src="newlogo.png" alt="logo"></h1>
+            <ul>
+                <!--<li><a href="homePage.html" class="active">HOME</a></li>-->
+                <li><a href="chatbox.html"><img class="chatbox" src="chatbox.png" alt="logo"></a></li>
+                <li><a href="tips.html" class="active">TIPS</a></li>
+                <li><a href="insights.html" class="active">INSIGHTS</a></li>
+                <li><a href="homePage.html" class="active">LOG OUT</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+      <div class="card rounded">
+          <div class="card-body">
+              <div class="introduction card-body text-center">
+                  <h2>MEET HELEN</h2>
+                  <hr/>
+                  <p><br/>A summary of the key observations from you chat with Helen.</p>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <p><br/></p>
+
+  <div class="container-lg my-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="chatbot-container">
+                <div id="header">
+                    <h1>Talk to me</h1>
+                </div>
+                <div id="chatbot">
+                    <!-- Chatbot content goes here -->
+                    <div id="conversation">
+                      <div class="chatbot-message">
+                        <p class="chatbot-text">Hi, my name is Helen! 👋 it's great to see you!</p>
+                      </div>
+                    </div>
+                    <form id="input-form">
+                      <message-container>
+                        <input id="input-field" type="text" placeholder="Type your message here">
+                        <button id="submit-button" type="submit">
+                          <img class="send-icon" src="send-message.png" alt="">
+                        </button>
+                      </message-container>
+                    </form>
+                </div>  
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="section-right">
+                <div class="notes-section">
+                    <h3>Saved Chat History</h3>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-light">
+                          <thead>
+                            <tr>
+                              <th scope="col">Date</th>
+                              <th scope="col">Time</th>
+                              <th scope="col">Snippet</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">1/12/23</th>
+                              <td>11:23</td>
+                              <td>Otto</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">2/11/23</th>
+                              <td>09:18</td>
+                              <td>Thornton</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">3/10/23</th>
+                              <td>07:30</td>
+                              <td>Bird</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">4/09/23</th>
+                              <td>12:13</td>
+                              <td>Smith</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">5/08/22</th>
+                              <td>17:02</td>
+                              <td>Mayers</td>
+                            </tr>
+                          </tbody>
+                            <!-- Table content goes here -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="chatbot.js"></script>
+
+    <p><br/></p>
+
+    <footer style="background-color: #3D348B;" class="text-light py-4">
+        <div class="container text-center">
+            <p>&copy; 2023 Valued. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
