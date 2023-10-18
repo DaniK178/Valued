@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="960dd672-e8c5-42f7-91d9-5eab1be1197e" name="Changes" comment="commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/chatHistory/SaveChatHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/chatHistory/SaveChatHistory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
