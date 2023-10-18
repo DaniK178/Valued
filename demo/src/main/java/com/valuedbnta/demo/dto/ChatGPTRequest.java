@@ -20,4 +20,7 @@ public class ChatGPTRequest {
         this.messages.add(new Message("user",prompt));
         //we want to pass a prompt and bind this prompt to the list of messages
     }
+
+    //so when we create the chatgpt request - is we have to pass in the model,and prompt
+    //create a message list that has a messsages with that have the role of user, and the prompt as content
 }
