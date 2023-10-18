@@ -2,15 +2,14 @@ package com.valuedbnta.demo.Repositories;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public class PromptRepository {
+public class userPromptRepository {
 
 
     private String thing;
 
 
+    public
 //    public List findAll(){
 //
 //        return null;

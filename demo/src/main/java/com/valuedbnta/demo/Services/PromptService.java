@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class PromptService {
 
-private PromptRepository promptRepository;
+private UserPromptRepository userPromptRepository;
 
 private  List<String> storedPrompts = new ArrayList<>();
 
@@ -18,13 +18,13 @@ private  List<String> storedPrompts = new ArrayList<>();
     }
 
     public void storeUserPrompt(String userPrompt) {
-        // Add the user prompt to the list of prompts
-        storedPrompts.add(userPrompt);
+        userPromptRepository.save(userPrompt);
+       // storedPrompts.add(userPrompt);
     }
 
-//    public List getStoredPrompts(){
-//     return  promptRepository.findAll();
-//    }
+    public List getStoredPrompts(){
+     return  userPromptRepository.findAll();
+    }
 
 
 }
