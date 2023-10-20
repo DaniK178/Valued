@@ -1,6 +1,6 @@
 package com.valuedbnta.demo.Services;
 
-import com.valuedbnta.demo.Repositories.PromptRepository;
+import com.valuedbnta.demo.Repositories.UserPromptRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,18 +13,18 @@ private UserPromptRepository userPromptRepository;
 
 private  List<String> storedPrompts = new ArrayList<>();
 
-    public PromptService(PromptRepository promptRepository) {
-        this.promptRepository = promptRepository;
+    public PromptService(UserPromptRepository promptRepository) {
+        this.userPromptRepository = promptRepository;
     }
 
-    public void storeUserPrompt(String userPrompt) {
-        userPromptRepository.save(userPrompt);
-       // storedPrompts.add(userPrompt);
-    }
-
-    public List getStoredPrompts(){
-     return  userPromptRepository.findAll();
-    }
+//    public void storeUserPrompt(String userPrompt) {
+//        userPromptRepository.save(userPrompt);
+//       // storedPrompts.add(userPrompt);
+//    }
+//
+//    public List getStoredPrompts(){
+//     return  userPromptRepository.findAll();
+//    }
 
 
 }
