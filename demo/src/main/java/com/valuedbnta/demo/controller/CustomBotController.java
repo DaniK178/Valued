@@ -33,6 +33,7 @@ public class CustomBotController {
 
     private String recommendationSetup;
 
+    @Autowired
     private PromptService promptService;
 
 
@@ -43,30 +44,19 @@ public class CustomBotController {
 
     //TO do - create a prompt to use for all recommendations:
 
-    @PostMapping("/start")
-    public void StartConversation() {
-        chatBox.getConversationHistory().put("System Message", "You are a helpful workplace friend and therapist, that is supportive and gives some advice.");
-        //do i want to create a message request that has system instead of user
-    }
+//    @PostMapping("/start")
+//    public void StartConversation() {
+//        chatBox.getConversationHistory().put("System Message", "You are a helpful workplace friend and therapist, that is supportive and gives some advice.");
+//        //do i want to create a message request that has system instead of user
+//    }
 
     @GetMapping("/conversation")
-    public ChatGPTResponse chat(@RequestParam("prompt") SentPrompt prompt) {
+    public ChatGPTResponse chat(@RequestParam("prompt") String prompt) {
 
-//        if (prompt == "exit") {
-//
-//            ChatGPTRequest exitRequest = new ChatGPTRequest(model, prompt);
-//            ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, exitRequest, ChatGPTResponse.class);
-//
-//            return
-//
-//        } else {
-
-       sentPrompt.setAnswer("you are");
-       chatBox.getConversationHistory().put(sentPrompt, "Yes understood, I must not break out of this role");
-
-
-       // chatBox.getConversationHistory().put("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. In conversations, you are only refer to yourself and role as the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times", "Yes understood, I must not break out of this role");
-            String conversationHistory = chatBox.getConversationHistory().toString();
+        //SET-UP CHATBOX:
+        SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. In conversations, you are only refer to yourself and role as the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times", "Yes understood, I must not break out of this role");
+        chatBox.getConversationHistory().add(setup);
+        String conversationHistory = chatBox.getConversationHistory().toString();
 
             //GENERATE REQUEST AND RESPONSE
             promptService.storeUserPrompt(prompt);
@@ -75,10 +65,13 @@ public class CustomBotController {
 
             //ADD USER HISTORY
             String responseContent = chatGPTResponse.getChoices().get(0).getMessage().getContent();
-            chatBox.getSentPrompts().add(prompt);
-            chatBox.getConversationHistory().put(chatBox.getSentPrompts().get(chatBox.getSentPrompts().size() - 1), responseContent);
+            SentPrompt newConversation = new SentPrompt(prompt,responseContent);
+            chatBox.getConversationHistory().add(newConversation);
 
             return chatGPTResponse;
         }
-  //  }
+
+
+
+
 }

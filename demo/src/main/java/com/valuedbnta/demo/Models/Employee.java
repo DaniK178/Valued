@@ -18,15 +18,15 @@ public class Employee {
     private String name;
 
     //can be null
-    @Column (name = "email")
+    @Column(name = "email")
     private String email;
 
     //can be null
-    @Column
+    @Column(name = "manager")
     private String manager;
 
-    @OneToMany (mappedBy = "employees", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"", ""})
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"employee"})
     private List<SentPrompt> sentPrompts;
 
 //    @OneToMany(mappedBy = "employees", cascade = CascadeType.ALL)
@@ -41,7 +41,6 @@ public class Employee {
         this.email = email;
         this.manager = manager;
         this.sentPrompts = new ArrayList<>();
-        this.chatboxes = new ArrayList<>();
     }
 
     public String getName() {
@@ -76,7 +75,13 @@ public class Employee {
     public void setSentMessages(List<SentPrompt> sentMessages) {
         this.sentPrompts = sentMessages;
     }
+}
 
+
+
+
+
+//Other methods to not be used
 //    public List<String> getSentPrompts() {
 //        return sentPrompts;
 //    }
@@ -85,13 +90,13 @@ public class Employee {
 //        this.sentPrompts = sentPrompts;
 //    }
 
-    public List<Chatbox> getChatboxes() {
-        return chatboxes;
-    }
-
-    public void setChatboxes(List<Chatbox> chatboxes) {
-        this.chatboxes = chatboxes;
-    }
+//    public List<Chatbox> getChatboxes() {
+//        return chatboxes;
+//    }
+//
+//    public void setChatboxes(List<Chatbox> chatboxes) {
+//        this.chatboxes = chatboxes;
+//    }
 
 //    public void addChatBox(Chatbox chatbox){
 //        this.chatboxes.add(chatbox);
@@ -100,5 +105,5 @@ public class Employee {
 //        }
 //    }
 
-}
+
 

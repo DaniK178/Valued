@@ -17,14 +17,19 @@ public class PromptService {
 //private  List<String> storedPrompts = new ArrayList<>();
 
 
-    public void storeUserPrompt(SentPrompt userPrompt) {
-        userPromptRepository.save(userPrompt);
+    public void storeUserPrompt(String userPrompt) {
+        //userPromptRepository.save(userPrompt);
        // storedPrompts.add(userPrompt);
     }
 
     //get  stored prompts by userid?
-    public List getStoredPrompts(){
-     return  userPromptRepository.findAll();
+    public List<String> getStoredPrompts(){
+     List<SentPrompt> sentPrompts =  userPromptRepository.findAll();
+     List<String> storedPrompts = new ArrayList<>();
+        for (SentPrompt prompt:  sentPrompts ) {
+            storedPrompts.add(prompt.getQuestion() );
+        }
+        return storedPrompts;
     }
 
 
