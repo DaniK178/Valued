@@ -1,19 +1,37 @@
 package com.valuedbnta.demo.Models;
 
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity(name = "employees")
 public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name")
     private String name;
 
+    //can be null
+    @Column (name = "email")
     private String email;
 
+    //can be null
+    @Column
     private String manager;
 
-    private List<String> sentPrompts;
+    @OneToMany (mappedBy = "employees", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"", ""})
+    private List<SentPrompt> sentPrompts;
 
-    private List<Chatbox> chatboxes;
+//    @OneToMany(mappedBy = "employees", cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties({"", ""})
+//    private List<Chatbox> chatboxes;
 
     public Employee() {
     }
@@ -50,22 +68,22 @@ public class Employee {
         this.manager = manager;
     }
 
-    public List<String> getSentMessages() {
+    public List<SentPrompt> getSentMessages() {
         return sentPrompts;
     }
     //or use sent prompts calls
 
-    public void setSentMessages(List<String> sentMessages) {
+    public void setSentMessages(List<SentPrompt> sentMessages) {
         this.sentPrompts = sentMessages;
     }
 
-    public List<String> getSentPrompts() {
-        return sentPrompts;
-    }
-
-    public void setSentPrompts(List<String> sentPrompts) {
-        this.sentPrompts = sentPrompts;
-    }
+//    public List<String> getSentPrompts() {
+//        return sentPrompts;
+//    }
+//
+//    public void setSentPrompts(List<String> sentPrompts) {
+//        this.sentPrompts = sentPrompts;
+//    }
 
     public List<Chatbox> getChatboxes() {
         return chatboxes;

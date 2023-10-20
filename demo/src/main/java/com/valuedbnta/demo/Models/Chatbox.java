@@ -1,5 +1,6 @@
 package com.valuedbnta.demo.Models;
 
+import jakarta.persistence.*;
 import org.apache.catalina.User;
 import org.springframework.context.annotation.Bean;
 
@@ -7,16 +8,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Entity (name = "chatbox")
 public class Chatbox {
 
- private Employee employee;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private List<String> sentPrompts;
+    @ManyToOne
+    //will need to msp thi
+    private Employee employee;
+
+    private List<SentPrompt> sentPrompts;
 
     private List<String> responses;
 
-
-    private HashMap<String, String> conversationHistory;
+    private HashMap<SentPrompt, String> conversationHistory;
 
     public Chatbox() {
         this.sentPrompts = new ArrayList<>();
@@ -40,14 +47,14 @@ public class Chatbox {
         this.employee = user;
     }
 
-    public List<String> getSentPrompts() {
+    public List<SentPrompt> getSentPrompts() {
         if (sentPrompts == null) {
             sentPrompts = new ArrayList<>();
         }
         return sentPrompts;
     }
 
-    public void setSentPrompts(List<String> sentPrompts) {
+    public void setSentPrompts(List<SentPrompt> sentPrompts) {
         this.sentPrompts = sentPrompts;
     }
 
@@ -59,11 +66,11 @@ public class Chatbox {
         this.responses = responses;
     }
 
-    public HashMap<String, String> getConversationHistory() {
+    public HashMap<SentPrompt, String> getConversationHistory() {
         return conversationHistory;
     }
 
-    public void setConversationHistory(HashMap<String, String> conversationHistory) {
+    public void setConversationHistory(HashMap<SentPrompt, String> conversationHistory) {
         this.conversationHistory = conversationHistory;
     }
 

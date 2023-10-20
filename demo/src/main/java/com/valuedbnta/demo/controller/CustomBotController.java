@@ -3,6 +3,7 @@ package com.valuedbnta.demo.controller;
 import com.valuedbnta.demo.Models.Chatbox;
 import com.valuedbnta.demo.Models.Employee;
 //import com.valuedbnta.demo.Services.PromptService;
+import com.valuedbnta.demo.Models.SentPrompt;
 import com.valuedbnta.demo.Services.PromptService;
 import com.valuedbnta.demo.dto.ChatGPTRequest;
 import com.valuedbnta.demo.dto.ChatGPTResponse;
@@ -37,6 +38,9 @@ public class CustomBotController {
 
     private Chatbox chatBox = new Chatbox();
 
+   private SentPrompt sentPrompt;
+
+
     //TO do - create a prompt to use for all recommendations:
 
     @PostMapping("/start")
@@ -46,7 +50,7 @@ public class CustomBotController {
     }
 
     @GetMapping("/conversation")
-    public ChatGPTResponse chat(@RequestParam("prompt") String prompt) {
+    public ChatGPTResponse chat(@RequestParam("prompt") SentPrompt prompt) {
 
 //        if (prompt == "exit") {
 //
@@ -57,11 +61,15 @@ public class CustomBotController {
 //
 //        } else {
 
-            chatBox.getConversationHistory().put("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. In conversations, you are only refer to yourself and role as the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times", "Yes understood, I must not break out of this role");
+       sentPrompt.setAnswer("you are");
+       chatBox.getConversationHistory().put(sentPrompt, "Yes understood, I must not break out of this role");
+
+
+       // chatBox.getConversationHistory().put("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. In conversations, you are only refer to yourself and role as the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times", "Yes understood, I must not break out of this role");
             String conversationHistory = chatBox.getConversationHistory().toString();
 
             //GENERATE REQUEST AND RESPONSE
-//      promptService.storeUserPrompt(prompt);
+            promptService.storeUserPrompt(prompt);
             ChatGPTRequest request = new ChatGPTRequest(model, conversationHistory + prompt);
             ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
 
