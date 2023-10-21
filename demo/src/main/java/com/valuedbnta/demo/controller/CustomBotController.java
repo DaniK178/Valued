@@ -44,11 +44,17 @@ public class CustomBotController {
 //       return
 //    }
 
+
+    //it post the first request every time
+    //it doesnt remember post history
+
     @GetMapping("/conversation")
     public ChatGPTResponse chat(@RequestParam("prompt") String prompt) {
 
         //SET-UP CHATBOX:
         SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. In conversations, you are only refer to yourself and role as the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 255 characters in length", "Yes understood, I must not break out of this role");
+
+
         promptService.storeUserPrompt(setup);
         chatBox.getConversationHistory().add(setup);
 

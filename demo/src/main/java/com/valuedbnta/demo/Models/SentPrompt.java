@@ -24,10 +24,10 @@ public class SentPrompt {
     @JoinColumn(name ="chatbox_id")
     private Chatbox chatbox;
 
-    @Column (name = "question")
+    @Column (length = 4000, name = "question")
     private String question;
 
-    @Column (name = "response")
+    @Column (length = 4000, name = "response")
     private String response;
 
 
