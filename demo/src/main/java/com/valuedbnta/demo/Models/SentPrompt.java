@@ -16,12 +16,12 @@ public class SentPrompt {
 
 
     @ManyToOne
-    @JoinColumn(name="employee_id")
+    @JoinColumn(name ="employee_id")
     private Employee employee;
 
 
     @ManyToOne
-    @JoinColumn(name="chatbox_id")
+    @JoinColumn(name ="chatbox_id")
     private Chatbox chatbox;
 
     @Column (name = "question")

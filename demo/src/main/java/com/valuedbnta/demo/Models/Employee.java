@@ -29,10 +29,6 @@ public class Employee {
     @JsonIgnoreProperties({"employee"})
     private List<SentPrompt> sentPrompts;
 
-//    @OneToMany(mappedBy = "employees", cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties({"", ""})
-//    private List<Chatbox> chatboxes;
-
     public Employee() {
     }
 

@@ -15,16 +15,17 @@ public class Chatbox {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "chatbox")
-    private List<SentPrompt> sentPrompts;
 
+ //   private List<SentPrompt> sentPrompts;
+
+    @OneToMany(mappedBy = "chatbox")
     private List<SentPrompt> conversationHistory;
 
     // private HashMap<SentPrompt, String> conversationHistory;
     // private List<String> responses;
 
     public Chatbox() {
-        this.sentPrompts = new ArrayList<>();
+     //   this.sentPrompts = new ArrayList<>();
         this.conversationHistory = new ArrayList<>();
 //        this.conversationHistory = new HashMap<>();
     }

@@ -28,18 +28,13 @@ import java.util.List;
         @Autowired
         private RestTemplate template;
 
-
         @Autowired
         private PromptService promptService;
 
     @GetMapping("/get-social-recommendations")
     public String getSocialRecommendations() {
-        // Retrieve the stored prompts from our service/database
 
-      //  List<String> storedPrompts = employee.getSentMessages();
-
-        List<String> storedPrompts = promptService.getStoredPrompts();//?
-      //  String combinedPrompt = String.join("\n", storedPrompts);
+        List<String> storedPrompts = promptService.getStoredPrompts();
         String socialRequest = "Hello, from now on you will be a workplace chatbox that is supportive and gives recommendations to the employee based on the prompts listed below, the recommendation must fall under these three categories: \"social\", \"learning and development\" and \"disability support\".\n" +
                 "I will be the employee. Please list up to 7 social recommendations you would make from the following prompts. Your response should only contain these recommendations. Display them in a numbered list " + storedPrompts;
         ChatGPTRequest combinedPromptRequest = new ChatGPTRequest(model, socialRequest);
@@ -47,7 +42,7 @@ import java.util.List;
 
         return socialGPTResponse.getChoices().get(0).getMessage().getContent();
     }
-//
+
     @GetMapping("/get-learning-recommendations")
     public String getLearningAndDevelopmentRecommendations() {
         List<String> storedPrompts = promptService.getStoredPrompts();

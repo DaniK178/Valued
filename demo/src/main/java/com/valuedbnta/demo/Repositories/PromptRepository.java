@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserPromptRepository extends JpaRepository<SentPrompt, Long> {
+public interface PromptRepository extends JpaRepository<SentPrompt, Long> {
 
-    @Query("SELECT * FROM prompts WHERE employee = 1")
-    List<SentPrompt> getAllPromptsByUserID();
+    //@Query("SELECT * FROM prompts WHERE employee = 1")
+  //  List<SentPrompt> getAllPromptsByEmployeeid();
 
-    List<SentPrompt> getAllPrompts();
+    //List<SentPrompt> getAllPrompts();
 
     //2 - things
     //list of conversation history -
