@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Chatbox {
 
- private Employee user;
+ private Employee employee;
 
     private List<String> sentPrompts;
 
@@ -25,19 +25,19 @@ public class Chatbox {
     }
 
 
-    public Chatbox(Employee user) {
-        this.user = user;
+    public Chatbox(Employee employee) {
+        this.employee = employee;
         this.sentPrompts = new ArrayList<>();
         this.responses = new ArrayList<>();
         this.conversationHistory = new HashMap<>();
     }
 
-    public Employee getUser() {
-        return user;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setUser(Employee user) {
-        this.user = user;
+    public void setEmployee(Employee user) {
+        this.employee = user;
     }
 
     public List<String> getSentPrompts() {
@@ -66,6 +66,12 @@ public class Chatbox {
     public void setConversationHistory(HashMap<String, String> conversationHistory) {
         this.conversationHistory = conversationHistory;
     }
+
+//    public void setUser(Employee user) {
+//        this.user = user;
+//        if (!user.getChatboxes().contains(this)) { // warning this may cause performance issues if you have a large data set since this operation is O(n)
+//            user.getChatboxes().add(this);
+//        }
 
 
 
