@@ -23,7 +23,10 @@ public class ChatBotService {
 
     public Chatbot getChatBotById(Long chatBotId){
         return chatBotRepository.findById(chatBotId).orElse(null);
+    }
 
+    public Chatbot saveChatBot(Chatbot chatBot) {
+        return chatBotRepository.save(chatBot);
     }
     public void saveConversation(SentPrompt sentPrompt){
 

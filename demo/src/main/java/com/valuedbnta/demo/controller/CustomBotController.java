@@ -59,7 +59,7 @@ public class CustomBotController {
 
         Chatbot newBot = chatBotService.createChatbox();
 
-        SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. In conversations, you are only refer to yourself and role as the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 400 characters in length", "Yes understood, I must not break out of this role");
+        SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are called the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
 
         setup.setChatBot(newBot);
        //this stores the prompts for recommendations
@@ -78,7 +78,8 @@ public class CustomBotController {
         //get specific chatbox
         Chatbot chatBot = chatBotService.getChatBotById(chatbotId);
         //get conversation history - does this data persists??
-        String conversationHistory = chatBot.getConversationHistory().toString();
+//        String conversationHistory = chatBot.getConversationHistory().toString();
+        String conversationHistory = chatBot.getConversationHistoryAsString();
 
             //GENERATE REQUEST AND RESPONSE
           //  promptService.storeUserPrompt(prompt);
@@ -93,15 +94,18 @@ public class CustomBotController {
 
         //STORING HISTORY
 
-            //store the prompt to use for recommendations
-            promptService.storeUserPrompt(newConversation);
+
             //set the new chat to a chat bot
             newConversation.setChatBot(chatBot);
             //add the new prompt to the chatbot
              chatBot.addSentPromptToChatBot(newConversation);
+
+             chatBotService.saveChatBot(chatBot);
             //add to conversation history
           //  chatBot.getConversationHistory().add(newConversation);
 
+        //store the prompt to use for recommendations
+        promptService.storeUserPrompt(newConversation);
 
             return chatGPTResponse;
         }

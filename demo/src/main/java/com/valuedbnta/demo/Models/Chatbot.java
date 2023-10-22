@@ -15,7 +15,7 @@ public class Chatbot {
 
  //   private List<SentPrompt> sentPrompts;
 
-    @OneToMany(mappedBy = "chatbot")
+    @OneToMany(mappedBy = "chatbot", fetch = FetchType.EAGER)
     private List<SentPrompt> conversationHistory;
 
     // private HashMap<SentPrompt, String> conversationHistory;
@@ -27,27 +27,39 @@ public class Chatbot {
 //        this.conversationHistory = new HashMap<>();
     }
 
-//    public void addSentPromptToChatBot(SentPrompt sentPrompt){
-//        if (conversationHistory == null) {
-//            conversationHistory = new ArrayList<>();
-//        }
-//        conversationHistory.add(sentPrompt);
-//        sentPrompt.setChatBot(this); // Set the chatbot reference in the SentPrompt
-//    }
-
-    public List<SentPrompt> getConversationHistory() {
+    public void addSentPromptToChatBot(SentPrompt sentPrompt){
         if (conversationHistory == null) {
             conversationHistory = new ArrayList<>();
         }
-        return conversationHistory;
+        conversationHistory.add(sentPrompt);
+        sentPrompt.setChatBot(this); // Set the chatbot reference in the SentPrompt
     }
 
-    public void setConversationHistory(List<SentPrompt> conversationHistory) {
-        this.conversationHistory = conversationHistory;
-    }
+//    public List<SentPrompt> getConversationHistory() {
+//        if (conversationHistory == null) {
+//            conversationHistory = new ArrayList<>();
+//        }
+//        return conversationHistory;
+//    }
+//
+//    public void setConversationHistory(List<SentPrompt> conversationHistory) {
+//        this.conversationHistory = conversationHistory;
+//    }
+//
+//    public void addSentPromptToChatBot(SentPrompt sentPrompt){
+//        this.conversationHistory.add(sentPrompt);
+//    }
 
-    public void addSentPromptToChatBot(SentPrompt sentPrompt){
-        this.conversationHistory.add(sentPrompt);
+    public String getConversationHistoryAsString() {
+        // Build a string representation of the conversation history
+        StringBuilder historyBuilder = new StringBuilder();
+
+        for (SentPrompt sentPrompt : conversationHistory) {
+            historyBuilder.append("Question: ").append(sentPrompt.getQuestion()).append("\n");
+            historyBuilder.append("Response: ").append(sentPrompt.getResponse()).append("\n\n");
+        }
+
+        return historyBuilder.toString();
     }
 }
 
