@@ -1,0 +1,12 @@
+.homePage {
+    position: relative;
+    margin-top: 5rem; 
+    font-family: 'League Spartan', sans-serif !important;
+    margin-bottom: 1rem;
+    
+}
+
+.carousel {
+    z-index: 1;
+}
+

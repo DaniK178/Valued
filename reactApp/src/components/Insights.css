@@ -1,0 +1,75 @@
+.insights-body {
+    margin-top: 7rem; 
+    margin-bottom: 3rem;
+  }
+
+main .card {
+    margin-bottom: 20px;
+}
+
+.notes-section,
+.saved-notes-section {
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.saved-notes {
+    border: 1px solid #F18701;
+    max-height: 200px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.saved-notes p {
+    margin-bottom: 5px;
+}
+
+button {
+    background-color: #F35B04;
+    border: #F35B04;
+    color: white;
+    padding: 7px;
+}
+
+
+hr {
+    border: 0;
+    height: 3px !important; 
+    background: #F7B801; 
+    margin: 20px 0;
+}
+
+.col-sm-5 {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    /*margin-left: 60px;
+    margin-right: 60px;*/
+}
+
+.card {
+    padding: 20px; 
+}
+
+.custom-border {
+    border-color: #F7B801; 
+  }
+
+#notes {
+    padding: 20px;
+}
+
+.content-after-title {
+    text-align: left; 
+}
+
+.custom-save-button {
+    background-color: #F18701;
+    border-color: #F18701;
+  }

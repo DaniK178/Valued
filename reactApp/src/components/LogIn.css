@@ -1,0 +1,54 @@
+.login-body {
+        margin-top: 7rem; 
+        margin-bottom: 3rem;
+}
+
+hr {
+    border: 0;
+    height: 3px !important; 
+    background: #F7B801; 
+    margin: 20px 0;
+}
+
+.login{
+        width: 500px;
+        margin: auto;
+        padding: 70px;
+        background:#F7B801;
+        border-radius: 15px ;
+}
+
+label{
+    color: black; 
+    font-size: 20px;
+}
+#Uname{
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    padding-left: 8px;
+}
+#Pass{
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    padding-left: 8px;
+}
+
+span{
+    color: black;
+    font-size: 17px;
+}
+
+.custom-save-button {
+    background-color: #3D348B;
+    border-color: #3D348B;
+  }
+
+  .custom-save-button:hover,
+  .custom-save-button:active {
+      background-color: #F18701 !important;
+      border-color: #F18701 !important;
+  }
