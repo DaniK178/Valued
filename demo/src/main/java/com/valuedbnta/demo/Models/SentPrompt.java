@@ -1,5 +1,7 @@
 package com.valuedbnta.demo.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -15,14 +17,16 @@ public class SentPrompt {
     private Long id;
 
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.PERSIST)
     @JoinColumn(name ="employee_id")
     private Employee employee;
 
 
-    @ManyToOne
-    @JoinColumn(name ="chatbox_id")
-    private Chatbox chatbox;
+    @ManyToOne (cascade = CascadeType.PERSIST)
+    @JoinColumn(name ="chatbot_id")
+    @JsonIgnore
+//    @JsonIgnoreProperties({"prompts"})
+    private Chatbot chatbot;
 
     @Column (length = 4000, name = "question")
     private String question;
@@ -57,12 +61,12 @@ public class SentPrompt {
         this.employee = employee;
     }
 
-    public Chatbox getChatbox() {
-        return chatbox;
+    public Chatbot getChatbot() {
+        return chatbot;
     }
 
-    public void setChatbox(Chatbox chatbox) {
-        this.chatbox = chatbox;
+    public void setChatBot(Chatbot chatbot) {
+        this.chatbot = chatbot;
     }
 
     public String getResponse() {

@@ -1,9 +1,9 @@
 package com.valuedbnta.demo.Components;
 
-import com.valuedbnta.demo.Models.Chatbox;
+import com.valuedbnta.demo.Models.Chatbot;
 import com.valuedbnta.demo.Models.Employee;
 import com.valuedbnta.demo.Models.SentPrompt;
-import com.valuedbnta.demo.Repositories.ChatBoxRepository;
+import com.valuedbnta.demo.Repositories.ChatBotRepository;
 import com.valuedbnta.demo.Repositories.PromptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -17,7 +17,7 @@ public class DataLoader implements ApplicationRunner {
     PromptRepository promptRepository;
 
     @Autowired
-    ChatBoxRepository chatBoxRepository;
+    ChatBotRepository chatBotRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -26,7 +26,7 @@ public class DataLoader implements ApplicationRunner {
 
         SentPrompt prompt = new SentPrompt("my name is Danielle","hi Danielle");
 
-        Chatbox chatbox = new Chatbox();
+        Chatbot chatbot = new Chatbot();
 
 
 

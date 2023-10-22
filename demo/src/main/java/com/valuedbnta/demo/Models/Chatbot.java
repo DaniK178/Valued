@@ -1,15 +1,12 @@
 package com.valuedbnta.demo.Models;
 
 import jakarta.persistence.*;
-import org.apache.catalina.User;
-import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-@Entity (name = "chatbox")
-public class Chatbox {
+@Entity (name = "chatbot")
+public class Chatbot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,18 +15,25 @@ public class Chatbox {
 
  //   private List<SentPrompt> sentPrompts;
 
-    @OneToMany(mappedBy = "chatbox")
+    @OneToMany(mappedBy = "chatbot")
     private List<SentPrompt> conversationHistory;
 
     // private HashMap<SentPrompt, String> conversationHistory;
     // private List<String> responses;
 
-    public Chatbox() {
+    public Chatbot() {
      //   this.sentPrompts = new ArrayList<>();
         this.conversationHistory = new ArrayList<>();
 //        this.conversationHistory = new HashMap<>();
     }
 
+//    public void addSentPromptToChatBot(SentPrompt sentPrompt){
+//        if (conversationHistory == null) {
+//            conversationHistory = new ArrayList<>();
+//        }
+//        conversationHistory.add(sentPrompt);
+//        sentPrompt.setChatBot(this); // Set the chatbot reference in the SentPrompt
+//    }
 
     public List<SentPrompt> getConversationHistory() {
         if (conversationHistory == null) {
@@ -40,6 +44,10 @@ public class Chatbox {
 
     public void setConversationHistory(List<SentPrompt> conversationHistory) {
         this.conversationHistory = conversationHistory;
+    }
+
+    public void addSentPromptToChatBot(SentPrompt sentPrompt){
+        this.conversationHistory.add(sentPrompt);
     }
 }
 

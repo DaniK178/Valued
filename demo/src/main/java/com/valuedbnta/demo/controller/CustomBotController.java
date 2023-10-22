@@ -1,9 +1,10 @@
 package com.valuedbnta.demo.controller;
 
-import com.valuedbnta.demo.Models.Chatbox;
+import com.valuedbnta.demo.Models.Chatbot;
 import com.valuedbnta.demo.Models.Employee;
 //import com.valuedbnta.demo.Services.PromptService;
 import com.valuedbnta.demo.Models.SentPrompt;
+import com.valuedbnta.demo.Services.ChatBotService;
 import com.valuedbnta.demo.Services.PromptService;
 import com.valuedbnta.demo.dto.ChatGPTRequest;
 import com.valuedbnta.demo.dto.ChatGPTResponse;
@@ -34,9 +35,12 @@ public class CustomBotController {
     @Autowired
     private PromptService promptService;
 
+    @Autowired
+    private ChatBotService chatBotService;
+
     private String recommendationSetup;
 
-    private Chatbox chatBox = new Chatbox();
+//    private Chatbot chatBot = new Chatbot();
 
     //Do we need to PostCHatbox and PostUser first????
 //    @PostMapping("/employee")
@@ -44,21 +48,37 @@ public class CustomBotController {
 //       return
 //    }
 
-
     //it post the first request every time
     //it doesnt remember post history
 
-    @GetMapping("/conversation")
-    public ChatGPTResponse chat(@RequestParam("prompt") String prompt) {
 
-        //SET-UP CHATBOX:
-        SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. In conversations, you are only refer to yourself and role as the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 255 characters in length", "Yes understood, I must not break out of this role");
+    //look into seeting up system insteasd
 
+    @PostMapping("/chatbot")
+    public Chatbot createChatBot(){
 
+        Chatbot newBot = chatBotService.createChatbox();
+
+        SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. In conversations, you are only refer to yourself and role as the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 400 characters in length", "Yes understood, I must not break out of this role");
+
+        setup.setChatBot(newBot);
+       //this stores the prompts for recommendations
+
+        newBot.addSentPromptToChatBot(setup);
         promptService.storeUserPrompt(setup);
-        chatBox.getConversationHistory().add(setup);
+      //  newBot.getConversationHistory().add(setup);
+       return newBot;
+    }
 
-        String conversationHistory = chatBox.getConversationHistory().toString();
+
+    @GetMapping("/conversation")
+    public ChatGPTResponse chat(@RequestParam("chatBotId") Long chatbotId,@RequestParam("prompt") String prompt) {
+        //SET-UP CHATBOX:
+
+        //get specific chatbox
+        Chatbot chatBot = chatBotService.getChatBotById(chatbotId);
+        //get conversation history - does this data persists??
+        String conversationHistory = chatBot.getConversationHistory().toString();
 
             //GENERATE REQUEST AND RESPONSE
           //  promptService.storeUserPrompt(prompt);
@@ -66,11 +86,22 @@ public class CustomBotController {
             ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
 
             //ADD USER HISTORY
+        // get the string of the chatgpt response
             String responseContent = chatGPTResponse.getChoices().get(0).getMessage().getContent();
+            //and the question and answer to a Sent Prompt object
             SentPrompt newConversation = new SentPrompt(prompt,responseContent);
 
+        //STORING HISTORY
+
+            //store the prompt to use for recommendations
             promptService.storeUserPrompt(newConversation);
-            chatBox.getConversationHistory().add(newConversation);
+            //set the new chat to a chat bot
+            newConversation.setChatBot(chatBot);
+            //add the new prompt to the chatbot
+             chatBot.addSentPromptToChatBot(newConversation);
+            //add to conversation history
+          //  chatBot.getConversationHistory().add(newConversation);
+
 
             return chatGPTResponse;
         }
