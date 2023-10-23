@@ -5,6 +5,7 @@ import com.valuedbnta.demo.Models.Employee;
 //import com.valuedbnta.demo.Services.PromptService;
 import com.valuedbnta.demo.Models.SentPrompt;
 import com.valuedbnta.demo.Services.ChatBotService;
+import com.valuedbnta.demo.Services.EmployeeService;
 import com.valuedbnta.demo.Services.PromptService;
 import com.valuedbnta.demo.dto.ChatGPTRequest;
 import com.valuedbnta.demo.dto.ChatGPTResponse;
@@ -37,6 +38,9 @@ public class CustomBotController {
 
     @Autowired
     private ChatBotService chatBotService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     private String recommendationSetup;
 
@@ -113,8 +117,13 @@ public class CustomBotController {
 
         @PostMapping("/user")
     public Employee employee (){
+        Employee newEmployee =  employeeService.createEmployee();
+        return newEmployee;
 
         }
+
+       // @PutMapping("/changePassword");
+
 
 
 
