@@ -21,6 +21,9 @@ public class Employee {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
     //can be null
     @Column(name = "manager")
     private String manager;
@@ -63,15 +66,33 @@ public class Employee {
         this.manager = manager;
     }
 
-    public List<SentPrompt> getSentMessages() {
+//    public List<SentPrompt> getSentMessages() {
+//        return sentPrompts;
+//    }
+//    //or use sent prompts calls
+//
+//    public void setSentMessages(List<SentPrompt> sentMessages) {
+//        this.sentPrompts = sentMessages;
+//    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<SentPrompt> getSentPrompts() {
         return sentPrompts;
     }
-    //or use sent prompts calls
 
-    public void setSentMessages(List<SentPrompt> sentMessages) {
-        this.sentPrompts = sentMessages;
+    public void setSentPrompts(List<SentPrompt> sentPrompts) {
+        this.sentPrompts = sentPrompts;
     }
 }
+
+
 
 
 

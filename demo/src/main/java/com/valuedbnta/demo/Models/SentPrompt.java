@@ -19,6 +19,7 @@ public class SentPrompt {
 
     @ManyToOne (cascade = CascadeType.PERSIST)
     @JoinColumn(name ="employee_id")
+    @JsonIgnore
     private Employee employee;
 
 
