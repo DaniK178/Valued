@@ -1,0 +1,20 @@
+package com.valuedbnta.demo.Repositories;
+
+import com.valuedbnta.demo.Models.SentPrompt;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PromptRepository extends JpaRepository<SentPrompt, Long> {
+
+    //@Query("SELECT * FROM prompts WHERE employee = 1")
+  //  List<SentPrompt> getAllPromptsByEmployeeid();
+
+    //List<SentPrompt> getAllPrompts();
+
+    //2 - things
+    //list of conversation history -
+
+    //list of all user prompts
+}
+

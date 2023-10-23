@@ -1,8 +1,11 @@
 package com.valuedbnta.demo.controller;
 
-import com.valuedbnta.demo.Models.Chatbox;
+import com.valuedbnta.demo.Models.Chatbot;
 import com.valuedbnta.demo.Models.Employee;
 //import com.valuedbnta.demo.Services.PromptService;
+import com.valuedbnta.demo.Models.SentPrompt;
+import com.valuedbnta.demo.Services.ChatBotService;
+import com.valuedbnta.demo.Services.EmployeeService;
 import com.valuedbnta.demo.Services.PromptService;
 import com.valuedbnta.demo.dto.ChatGPTRequest;
 import com.valuedbnta.demo.dto.ChatGPTResponse;
@@ -30,73 +33,98 @@ public class CustomBotController {
     @Autowired
     private RestTemplate template;
 
-    private String recommendationSetup;
-
+    @Autowired
     private PromptService promptService;
 
-    private Chatbox chatBox = new Chatbox();
+    @Autowired
+    private ChatBotService chatBotService;
 
+    @Autowired
+    private EmployeeService employeeService;
 
-//    @PostMapping("/start")
-//    public void StartConversation() {
-//        chatBox.getConversationHistory().put("System Message", "You are a helpful workplace friend and therapist, that is supportive and gives some advice.");
-//        //do i want to create a message request that has system instead of user
+    private String recommendationSetup;
+
+//    private Chatbot chatBot = new Chatbot();
+
+    //Do we need to PostCHatbox and PostUser first????
+//    @PostMapping("/employee")
+//    public Employee newEmployee (){
+//       return
 //    }
 
+    //it post the first request every time
+    //it doesnt remember post history
+
+
+    //look into seeting up system insteasd
+
+    @PostMapping("/chatbot")
+    public Chatbot createChatBot(){
+
+        Chatbot newBot = chatBotService.createChatbox();
+
+        SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are called the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
+
+        setup.setChatBot(newBot);
+       //this stores the prompts for recommendations
+
+        newBot.addSentPromptToChatBot(setup);
+        promptService.storeUserPrompt(setup);
+      //  newBot.getConversationHistory().add(setup);
+       return newBot;
+    }
+
+
     @GetMapping("/conversation")
-    public ChatGPTResponse chat(@RequestParam("prompt") String prompt) {
-            chatBox.getConversationHistory().put("You are a helpful corporate workplace friend that is supportive, listens and gives some advice. You empathise and dig deeper in conversations. In conversations, if you are asked who you are: you refer to yourself and role as the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times", "Yes understood, I must not break out of this role");
-            String conversationHistory = chatBox.getConversationHistory().toString();
+    public ChatGPTResponse chat(@RequestParam("chatBotId") Long chatbotId,@RequestParam("prompt") String prompt) {
+        //SET-UP CHATBOX:
+
+        //get specific chatbox
+        Chatbot chatBot = chatBotService.getChatBotById(chatbotId);
+        //get conversation history - does this data persists??
+//        String conversationHistory = chatBot.getConversationHistory().toString();
+        String conversationHistory = chatBot.getConversationHistoryAsString();
 
             //GENERATE REQUEST AND RESPONSE
+          //  promptService.storeUserPrompt(prompt);
             ChatGPTRequest request = new ChatGPTRequest(model, conversationHistory + prompt);
             ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
 
             //ADD USER HISTORY
+        // get the string of the chatgpt response
             String responseContent = chatGPTResponse.getChoices().get(0).getMessage().getContent();
-            chatBox.getSentPrompts().add(prompt);
-            chatBox.getConversationHistory().put(chatBox.getSentPrompts().get(chatBox.getSentPrompts().size() - 1), responseContent);
+            //and the question and answer to a Sent Prompt object
+            SentPrompt newConversation = new SentPrompt(prompt,responseContent);
+
+        //STORING HISTORY
+
+
+            //set the new chat to a chat bot
+            newConversation.setChatBot(chatBot);
+            //add the new prompt to the chatbot
+             chatBot.addSentPromptToChatBot(newConversation);
+
+             chatBotService.saveChatBot(chatBot);
+            //add to conversation history
+          //  chatBot.getConversationHistory().add(newConversation);
+
+        //store the prompt to use for recommendations
+        promptService.storeUserPrompt(newConversation);
 
             return chatGPTResponse;
         }
 
 
-    @GetMapping("/get-social-recommendations")
-    public String getSocialRecommendations() {
-        List<String> storedPrompts = chatBox.getSentPrompts();
-        String socialRequest = "Hello, from now on you will be a workplace chatbox that is supportive and gives recommendations to the employee based on the prompts listed below, the recommendation must fall under these three categories: \"social\", \"learning and development\" and \"disability support\".\n" +
-                "I will be the employee. Please list UP TO 7 social recommendations you would make from the following prompts. Your response should only contain these recommendations. Display them in a numbered list " + storedPrompts;
-        ChatGPTRequest combinedPromptRequest = new ChatGPTRequest(model, socialRequest);
-        ChatGPTResponse socialGPTResponse = template.postForObject(apiURL,combinedPromptRequest,ChatGPTResponse.class);
+        @PostMapping("/user")
+    public Employee employee (){
+        Employee newEmployee =  employeeService.createEmployee();
+        return newEmployee;
 
-        return socialGPTResponse.getChoices().get(0).getMessage().getContent();
-    }
+        }
 
-    @GetMapping("/get-l-and-d-recommendations")
-    public String getlandRecommendations() {
-        List<String> storedPrompts = chatBox.getSentPrompts();
-        String socialRequest = "Hello, from now on you will be a workplace chatbox that is supportive and gives recommendations to the employee based on the prompts listed below, the recommendation must fall under these three categories: \"social\", \"learning and development\" and \"disability support\".\n" +
-                "I will be the employee. Please list UP TO 7 learning and development recommendations you would make from the following prompts. Your response should only contain these recommendations. Display them in a numbered list " + storedPrompts;
-        ChatGPTRequest combinedPromptRequest = new ChatGPTRequest(model, socialRequest);
-        ChatGPTResponse socialGPTResponse = template.postForObject(apiURL,combinedPromptRequest,ChatGPTResponse.class);
-
-        return socialGPTResponse.getChoices().get(0).getMessage().getContent();
-    }
-
-    @GetMapping("/get-disability-recommendations")
-    public String getDisabilityRecommendations() {
-        List<String> storedPrompts = chatBox.getSentPrompts();
-        String socialRequest = "Hello, from now on you will be a workplace chatbox that is supportive and gives recommendations to the employee based on the prompts listed below, the recommendation must fall under these three categories: \"social\", \"learning and development\" and \"disability support\".\n" +
-                "I will be the employee. Please list UP TO 7 disability support recommendations you would make from the following prompts. Your response should only contain these recommendations. Display them in a numbered list " + storedPrompts;
-        ChatGPTRequest combinedPromptRequest = new ChatGPTRequest(model, socialRequest);
-        ChatGPTResponse socialGPTResponse = template.postForObject(apiURL,combinedPromptRequest,ChatGPTResponse.class);
-
-        return socialGPTResponse.getChoices().get(0).getMessage().getContent();
-    }
+       // @PutMapping("/changePassword");
 
 
-
-    //  }
 
 
 
