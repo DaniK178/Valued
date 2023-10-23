@@ -1,0 +1,14 @@
+.setting-body {
+    height: 100%;
+    margin: 0;
+    background-image: url('../Images/background-image.jpg');
+    background-size: cover;
+}
+
+.setting-top {
+    margin-top: 80px;
+}
+
+.login-center {
+    margin-top: 10rem; 
+  }
