@@ -9,12 +9,14 @@ import com.valuedbnta.demo.Services.EmployeeService;
 import com.valuedbnta.demo.Services.PromptService;
 import com.valuedbnta.demo.dto.ChatGPTRequest;
 import com.valuedbnta.demo.dto.ChatGPTResponse;
+import com.valuedbnta.demo.dto.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //add https to this
@@ -45,9 +47,20 @@ public class CustomBotController {
     private String recommendationSetup;
 
     @PostMapping("/{userId}/chatbot")
-    public Chatbot createChatBot(@PathVariable Long userId) {
+    public ResponseEntity<Chatbot> createChatBot(@PathVariable Long userId) {
 
         Employee employee = employeeService.getEmployeeById(userId);
+
+        if (employee == null) {
+            Message message = new Message("user", " Error, this may be because this user doesn't exist, please create the user");
+            ChatGPTResponse.Choice errorChoice =  new ChatGPTResponse.Choice(0,message);
+
+            List<ChatGPTResponse.Choice> choices = new ArrayList<>();
+            choices.add(errorChoice);
+
+            ChatGPTResponse errorResponse = new ChatGPTResponse(choices);
+            return new ResponseEntity<>(null, HttpStatus.FAILED_DEPENDENCY);
+        }
 
         Chatbot newBot = chatBotService.createChatbox();
 
@@ -62,7 +75,7 @@ public class CustomBotController {
         promptService.storeUserPrompt(setup);
         employeeService.saveEmployee(employee);
 
-        return newBot;
+        return new ResponseEntity<>(newBot, HttpStatus.CREATED);
     }
 
     //right now i can chat to an chatbot with an employee??
@@ -92,17 +105,26 @@ public class CustomBotController {
             newConversation.setChatBot(chatBot);
             chatBot.addSentPromptToChatBot(newConversation);
 
-            //store this to a user id
+            //STORE TO USER ID
             newConversation.setEmployee(employee);
             employee.getSentPrompts().add(newConversation);
 
+            //SAVE TO DATABASES
             employeeService.saveEmployee(employee);
             chatBotService.saveChatBot(chatBot);
             promptService.storeUserPrompt(newConversation);
 
             return ResponseEntity.ok(chatGPTResponse);
         } else {
-            return null;
+
+            Message message = new Message("user", " Error, this may be because this user does not have access to this chatbot, please check the chatbot ID avaliable to yuo user:");
+            ChatGPTResponse.Choice errorChoice =  new ChatGPTResponse.Choice(0,message);
+
+            List<ChatGPTResponse.Choice> choices = new ArrayList<>();
+            choices.add(errorChoice);
+
+            ChatGPTResponse errorResponse = new ChatGPTResponse(choices);
+            return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
         }
 
     }

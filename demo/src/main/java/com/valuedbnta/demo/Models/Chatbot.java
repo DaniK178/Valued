@@ -13,18 +13,11 @@ public class Chatbot {
     private Long id;
 
 
- //   private List<SentPrompt> sentPrompts;
-
     @OneToMany(mappedBy = "chatbot", fetch = FetchType.EAGER)
     private List<SentPrompt> conversationHistory;
 
-    // private HashMap<SentPrompt, String> conversationHistory;
-    // private List<String> responses;
-
     public Chatbot() {
-     //   this.sentPrompts = new ArrayList<>();
         this.conversationHistory = new ArrayList<>();
-//        this.conversationHistory = new HashMap<>();
     }
 
     public void addSentPromptToChatBot(SentPrompt sentPrompt){
