@@ -6,7 +6,7 @@ function Chat() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([{ text: "Hi, my name is Helen! 👋 it's great to see you!", sender: "chatbot" }]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setInput('');
 
@@ -21,14 +21,45 @@ function Chat() {
     conversation.scrollTop = conversation.scrollHeight;
   };
 
-  const generateResponse = (input) => {
-    const responses = [
-      "Hello, how can I help you today? 😊",
-      "I'm sorry, I didn't understand your question. Could you please rephrase it? 😕",
-      // ... (other responses)
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
+  fetch('http://localhost:8080/bot/get-social-recommendations')
+    .then((response) => response.json())
+    .then((data) => {
+      // Process the data from the server
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
+  const sendUserMessage = async (input) => {
+    try {
+      // Make an API request to your Spring Boot backend
+      const response = await fetch('http://localhost:8080/bot/conversation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ chatBotId: 1, prompt: input }),
+      });
+
+      if (!response.ok) {
+        throw new Error('API request failed');
+      }
+
+      const data = await response.json();
+      return data.choices[0].message.content; // Modify this to match the response structure
+    } catch (error) {
+      throw error;
+    }
   };
+
+//  const generateResponse = (input) => {
+//    const responses = [
+//      "Hello, how can I help you today? 😊",
+//      "I'm sorry, I didn't understand your question. Could you please rephrase it? 😕",
+//      // ... (other responses)
+//    ];
+//    return responses[Math.floor(Math.random() * responses.length)];
+//  };
 
   return (
     <div className="chat-body">
