@@ -32,6 +32,10 @@ public class Chatbot {
         return conversationHistory;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     //    public List<SentPrompt> getConversationHistory() {
 //        if (conversationHistory == null) {
 //            conversationHistory = new ArrayList<>();

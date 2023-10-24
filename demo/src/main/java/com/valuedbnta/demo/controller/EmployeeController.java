@@ -2,10 +2,13 @@ package com.valuedbnta.demo.controller;
 
 import com.valuedbnta.demo.Models.Employee;
 import com.valuedbnta.demo.Services.EmployeeService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
@@ -13,6 +16,16 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+
+    @PostConstruct
+    public void initializeDefaultEmployees() {
+        Employee employee1 = new Employee("Fatma A", "FatmaS@gmail.com", "MySecretPassword8","Brian Anderson","Software Engineer");
+        Employee employee2 = new Employee("Hamza B", "HamzaBe@yahoo.co.uk", "you'llneverGuess","Chris Stone","Business Analyst");
+
+        employeeService.saveEmployee(employee1);
+        employeeService.saveEmployee(employee2);
+    }
 
     @PostMapping("/new")
     public ResponseEntity<Employee> addNewEmployee (@RequestBody Employee employee){
@@ -27,19 +40,32 @@ public class EmployeeController {
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
 //      Request Body:
 //            {
-//                "name": "John Doe",
+//                    "name": "John Doe",
 //                    "email": "john.doe@example.com",
 //                    "password": "password123",
 //                    "manager": "Manager Name"
 //            }
     }
 
+    @GetMapping ("/all")
+    public ResponseEntity<List<Employee>> viewEmployees(){
+       List employees = employeeService.getEmployees();
+       if (employees.isEmpty()){
+           return new ResponseEntity<>(employees,HttpStatus.NO_CONTENT);
+       }
+        return new ResponseEntity<>(employees,HttpStatus.FOUND);
+    }
 
-//    @PostMapping
-//    public ResponseEntity<User> addNewUser(@RequestBody User user){
-//        User newUser = userService.addUser(user);
-//        return new ResponseEntity<>(user, HttpStatus.CREATED);
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+        Employee employee = employeeService.getEmployeeById(id);
+        if (employee != null) {
+            return new ResponseEntity<>(employee, HttpStatus.FOUND);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @PutMapping("/{id}/password")
     public ResponseEntity<String> updatePassword(@PathVariable Long id, @RequestBody Employee employee) {
