@@ -35,7 +35,11 @@ public class Chatbot {
         sentPrompt.setChatBot(this); // Set the chatbot reference in the SentPrompt
     }
 
-//    public List<SentPrompt> getConversationHistory() {
+    public List<SentPrompt> getConversationHistory() {
+        return conversationHistory;
+    }
+
+    //    public List<SentPrompt> getConversationHistory() {
 //        if (conversationHistory == null) {
 //            conversationHistory = new ArrayList<>();
 //        }

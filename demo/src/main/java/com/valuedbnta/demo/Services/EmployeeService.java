@@ -14,8 +14,14 @@ public class EmployeeService {
     UserRepository userRepository;
 
 
-    public Employee createEmployee() {
-        Employee employee = new Employee();
-        return userRepository.save(employee);
+    public Employee createEmployee(Employee employee) {
+      //  Employee employee = new Employee();
+        userRepository.save(employee);
+        return employee;
     }
+
+    public Employee getEmployeeById(Long employeeId){return userRepository.findById(employeeId).orElse(null);
+    }
+
+    public void saveEmployee(Employee employee){ userRepository.save(employee);}
 }
