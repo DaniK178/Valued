@@ -1,19 +1,36 @@
 package com.valuedbnta.demo.Models;
 
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity(name = "employees")
 public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name")
     private String name;
 
+    //can be null
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
+    //can be null
+    @Column(name = "manager")
     private String manager;
 
-    private List<String> sentPrompts;
-
-    private List<Chatbox> chatboxes;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"employee"})
+    private List<SentPrompt> sentPrompts;
 
     public Employee() {
     }
@@ -23,7 +40,6 @@ public class Employee {
         this.email = email;
         this.manager = manager;
         this.sentPrompts = new ArrayList<>();
-        this.chatboxes = new ArrayList<>();
     }
 
     public String getName() {
@@ -50,30 +66,54 @@ public class Employee {
         this.manager = manager;
     }
 
-    public List<String> getSentMessages() {
+//    public List<SentPrompt> getSentMessages() {
+//        return sentPrompts;
+//    }
+//    //or use sent prompts calls
+//
+//    public void setSentMessages(List<SentPrompt> sentMessages) {
+//        this.sentPrompts = sentMessages;
+//    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<SentPrompt> getSentPrompts() {
         return sentPrompts;
     }
-    //or use sent prompts calls
 
-    public void setSentMessages(List<String> sentMessages) {
-        this.sentPrompts = sentMessages;
-    }
-
-    public List<String> getSentPrompts() {
-        return sentPrompts;
-    }
-
-    public void setSentPrompts(List<String> sentPrompts) {
+    public void setSentPrompts(List<SentPrompt> sentPrompts) {
         this.sentPrompts = sentPrompts;
     }
+}
 
-    public List<Chatbox> getChatboxes() {
-        return chatboxes;
-    }
 
-    public void setChatboxes(List<Chatbox> chatboxes) {
-        this.chatboxes = chatboxes;
-    }
+
+
+
+
+
+//Other methods to not be used
+//    public List<String> getSentPrompts() {
+//        return sentPrompts;
+//    }
+//
+//    public void setSentPrompts(List<String> sentPrompts) {
+//        this.sentPrompts = sentPrompts;
+//    }
+
+//    public List<Chatbox> getChatboxes() {
+//        return chatboxes;
+//    }
+//
+//    public void setChatboxes(List<Chatbox> chatboxes) {
+//        this.chatboxes = chatboxes;
+//    }
 
 //    public void addChatBox(Chatbox chatbox){
 //        this.chatboxes.add(chatbox);
@@ -82,5 +122,5 @@ public class Employee {
 //        }
 //    }
 
-}
+
 
