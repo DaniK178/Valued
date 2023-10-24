@@ -46,46 +46,35 @@ public class CustomBotController {
 
     private String recommendationSetup;
 
-    @PostMapping("/{userId}/chatbot")
-    public ResponseEntity<Chatbot> createChatBot(@PathVariable Long userId) {
-
-        Employee employee = employeeService.getEmployeeById(userId);
-
-        if (employee == null) {
-            Message message = new Message("user", " Error, this may be because this user doesn't exist, please create the user");
-            ChatGPTResponse.Choice errorChoice =  new ChatGPTResponse.Choice(0,message);
-
-            List<ChatGPTResponse.Choice> choices = new ArrayList<>();
-            choices.add(errorChoice);
-
-            ChatGPTResponse errorResponse = new ChatGPTResponse(choices);
-            return new ResponseEntity<>(null, HttpStatus.FAILED_DEPENDENCY);
-        }
-
-        Chatbot newBot = chatBotService.createChatbox();
-
-        SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are called the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
-
-        setup.setChatBot(newBot);
-        newBot.addSentPromptToChatBot(setup);
-
-        setup.setEmployee(employee);
-        employee.getSentPrompts().add(setup);
-
-        promptService.storeUserPrompt(setup);
-        employeeService.saveEmployee(employee);
-
-        return new ResponseEntity<>(newBot, HttpStatus.CREATED);
-    }
-
-    //right now i can chat to an chatbot with an employee??
-
     @GetMapping("/{userId}/conversation")
-    public ResponseEntity<ChatGPTResponse> chat(@PathVariable Long userId, @RequestParam("chatBotId") Long chatbotId, @RequestParam("prompt") String prompt) {
+    public ResponseEntity<ChatGPTResponse> chat(@PathVariable Long userId, @RequestParam("prompt") String prompt) {
         //SET-UP CHATBOX:
-        //get specific chatbox
-        Chatbot chatBot = chatBotService.getChatBotById(chatbotId);
+
         Employee employee = employeeService.getEmployeeById(userId);
+
+       if  (employee.getSentPrompts().isEmpty()) {
+           Chatbot newBot = chatBotService.createChatbox();
+
+           SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are called the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
+
+           //save to chatbot
+           setup.setChatBot(newBot);
+           newBot.addSentPromptToChatBot(setup);
+           //save to employee
+           setup.setEmployee(employee);
+           employee.getSentPrompts().add(setup);
+           //save to database
+           promptService.storeUserPrompt(setup);
+           employeeService.saveEmployee(employee);
+       }
+
+       List<SentPrompt> prompts =  promptService.getSentPromptsByEmployeeId(employee.getId());
+
+       Long chatBotId = null;
+       SentPrompt firstSentPrompt = prompts.get(0);
+       chatBotId = firstSentPrompt.getChatbot().getId();
+
+        Chatbot chatBot = chatBotService.getChatBotById(chatBotId);
 
         boolean hasUserAccess = chatBot.getConversationHistory().stream()
                 .anyMatch(sentPrompt -> sentPrompt.getEmployee().getId().equals(userId));
@@ -129,20 +118,6 @@ public class CustomBotController {
 
     }
 }
-
-
-//    @GetMapping(value = "/{id}")
-//    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
-//        Optional<Recipe> recipe = recipeService.getRecipeById(id);
-//        if (recipe.isPresent()) {
-//            return new ResponseEntity<>(recipe.get(), HttpStatus.OK);
-//
-//        } else {
-//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//        }
-//
-//    }
-
 
 
 

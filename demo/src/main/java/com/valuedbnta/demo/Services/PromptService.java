@@ -41,6 +41,10 @@ public class PromptService {
         return storedPrompts;
     }
 
+    public List<SentPrompt> getSentPromptsByEmployeeId(Long employeeId){
+        return promptRepository.findByEmployeeId(employeeId);
+    }
+
 
 
 
