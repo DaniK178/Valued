@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PromptRepository extends JpaRepository<SentPrompt, Long> {
 
+    List<SentPrompt>findByEmployeeId(Long employeeId);
+
     //@Query("SELECT * FROM prompts WHERE employee = 1")
   //  List<SentPrompt> getAllPromptsByEmployeeid();
 
