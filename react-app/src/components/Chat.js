@@ -5,61 +5,71 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Chat() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([{ text: "Hi, my name is Helen! 👋 it's great to see you!", sender: "chatbot" }]);
+  const [socialRecommendations, setSocialRecommendations] = useState('');
+  const [learningRecommendations, setLearningRecommendations] = useState('');
+  const [disabilityRecommendations, setDisabilityRecommendations] = useState('');
+
+  useEffect(() => {
+    // Fetch social recommendations
+    fetch('http://localhost:8080/bot/get-social-recommendations')
+      .then((response) => response.text())
+      .then((data) => {
+        setSocialRecommendations(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching social recommendations:', error);
+      });
+
+    //  learning recommendations
+    fetch('http://localhost:8080/bot/get-learning-recommendations')
+      .then((response) => response.text())
+      .then((data) => {
+        setLearningRecommendations(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching learning recommendations:', error);
+      });
+
+    //  disability recommendations
+    fetch('http://localhost:8080/bot/get-disability-recommendations')
+      .then((response) => response.text())
+      .then((data) => {
+        setDisabilityRecommendations(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching disability recommendations:', error);
+      });
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setInput('');
 
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" });
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    setMessages(prevMessages => [...prevMessages, { text: input, sender: "user", sentTime: currentTime }]);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: input, sender: 'user', sentTime: currentTime },
+    ]);
 
     const response = generateResponse(input);
-    setMessages(prevMessages => [...prevMessages, { text: response, sender: "chatbot", sentTime: currentTime }]);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: response, sender: 'chatbot', sentTime: currentTime },
+    ]);
 
     const conversation = document.getElementById('conversation');
     conversation.scrollTop = conversation.scrollHeight;
   };
 
-  fetch('http://localhost:8080/bot/get-social-recommendations')
-    .then((response) => response.json())
-    .then((data) => {
-      // Process the data from the server
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-
-  const sendUserMessage = async (input) => {
-    try {
-      // Make an API request to your Spring Boot backend
-      const response = await fetch('http://localhost:8080/bot/conversation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ chatBotId: 1, prompt: input }),
-      });
-
-      if (!response.ok) {
-        throw new Error('API request failed');
-      }
-
-      const data = await response.json();
-      return data.choices[0].message.content; // Modify this to match the response structure
-    } catch (error) {
-      throw error;
-    }
+  const generateResponse = (input) => {
+    const responses = [
+      "Hello, how can I help you today? 😊",
+      "I'm sorry, I didn't understand your question. Could you please rephrase it? 😕",
+      // ... (other responses)
+    ];
+    return responses[Math.floor(Math.random() * responses.length)];
   };
-
-//  const generateResponse = (input) => {
-//    const responses = [
-//      "Hello, how can I help you today? 😊",
-//      "I'm sorry, I didn't understand your question. Could you please rephrase it? 😕",
-//      // ... (other responses)
-//    ];
-//    return responses[Math.floor(Math.random() * responses.length)];
-//  };
 
   return (
     <div className="chat-body">
