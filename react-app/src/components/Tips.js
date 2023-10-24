@@ -8,6 +8,8 @@ function Tips() {
   return (
     <div className="tips-body">
       <div className="container-fluid mt-4">
+      <div className="card rounded">
+                    <div className="card-body">
         <div className="introduction card-body text-center">
           <h2>TIPS</h2>
           <p style={{ padding: '10px' }}>
@@ -78,6 +80,8 @@ function Tips() {
           </div>
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 }
