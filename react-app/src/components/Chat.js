@@ -5,17 +5,58 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Chat() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([{ text: "Hi, my name is Helen! 👋 it's great to see you!", sender: "chatbot" }]);
+  const [socialRecommendations, setSocialRecommendations] = useState('');
+  const [learningRecommendations, setLearningRecommendations] = useState('');
+  const [disabilityRecommendations, setDisabilityRecommendations] = useState('');
 
-  const handleSubmit = (event) => {
+  useEffect(() => {
+    // Fetch social recommendations
+    fetch('http://localhost:8080/bot/get-social-recommendations')
+      .then((response) => response.text())
+      .then((data) => {
+        setSocialRecommendations(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching social recommendations:', error);
+      });
+
+    //  learning recommendations
+    fetch('http://localhost:8080/bot/get-learning-recommendations')
+      .then((response) => response.text())
+      .then((data) => {
+        setLearningRecommendations(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching learning recommendations:', error);
+      });
+
+    //  disability recommendations
+    fetch('http://localhost:8080/bot/get-disability-recommendations')
+      .then((response) => response.text())
+      .then((data) => {
+        setDisabilityRecommendations(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching disability recommendations:', error);
+      });
+  }, []);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setInput('');
 
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" });
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    setMessages(prevMessages => [...prevMessages, { text: input, sender: "user", sentTime: currentTime }]);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: input, sender: 'user', sentTime: currentTime },
+    ]);
 
     const response = generateResponse(input);
-    setMessages(prevMessages => [...prevMessages, { text: response, sender: "chatbot", sentTime: currentTime }]);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: response, sender: 'chatbot', sentTime: currentTime },
+    ]);
 
     const conversation = document.getElementById('conversation');
     conversation.scrollTop = conversation.scrollHeight;
