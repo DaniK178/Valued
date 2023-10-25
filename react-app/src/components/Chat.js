@@ -41,18 +41,18 @@ function Chat() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setInput('');
+   
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: input, sender: 'user', sentTime: currentTime },
     ]);
     try {
-      const response = await axios.get(`/bot/conversation?prompt=${input}`);
+      const response = await axios.get(`http://localhost:8080/bot/conversation?prompt=${input}`);
       const chatbotReply = response.data;
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: chatbotReply, sender: 'chatbot', sentTime: currentTime },
+        { text: chatbotReply.choices[0].message.content, sender: 'chatbot', sentTime: currentTime },
       ]);
       // Scroll to the bottom of the conversation
       const conversation = document.getElementById('conversation');
@@ -60,7 +60,45 @@ function Chat() {
     } catch (error) {
       console.error('API request error:', error);
     }
+    setInput('');
   };
+
+
+
+
+
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   setInput('');
+  //   const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  //   setMessages((prevMessages) => [
+  //     ...prevMessages,
+  //     { text: input, sender: 'user', sentTime: currentTime },
+  //   ]);
+  
+  //   try {
+  //     const response = await fetch(`http://localhost:8080/bot/conversation?prompt=${input}`);
+      
+  //     if (response.ok) {
+  //       const chatbotReply = await response.json();
+  //       setMessages((prevMessages) => [
+  //         ...prevMessages,
+  //         { text: chatbotReply, sender: 'chatbot', sentTime: currentTime },
+  //       ]);
+  //     } else {
+  //       // Handle the error here
+  //       console.error('API request error:', response.status, response.statusText);
+  //     }
+  
+  //     // Scroll to the bottom of the conversation
+  //     const conversation = document.getElementById('conversation');
+  //     conversation.scrollTop = conversation.scrollHeight;
+  //   } catch (error) {
+  //     console.error('Fetch error:', error);
+  //   }
+  // };
+
 
   const generateResponse = (input) => {
     const responses = [
