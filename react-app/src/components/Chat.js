@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Chat.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-function Chat() {
+function Chat({userId}) {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ text: "Hi, my name is Helen! 👋 it's great to see you!", sender: "chatbot" }]);
+  const [messages, setMessages] = useState([{ text: "Hi, my name is Helen! :wave: it's great to see you!", sender: "chatbot" }]);
   const [socialRecommendations, setSocialRecommendations] = useState('');
   const [learningRecommendations, setLearningRecommendations] = useState('');
   const [disabilityRecommendations, setDisabilityRecommendations] = useState('');
@@ -19,7 +19,6 @@ function Chat() {
       .catch((error) => {
         console.error('Error fetching social recommendations:', error);
       });
-
     //  learning recommendations
     fetch('http://localhost:8080/bot/get-learning-recommendations')
       .then((response) => response.text())
@@ -29,7 +28,6 @@ function Chat() {
       .catch((error) => {
         console.error('Error fetching learning recommendations:', error);
       });
-
     //  disability recommendations
     fetch('http://localhost:8080/bot/get-disability-recommendations')
       .then((response) => response.text())
@@ -44,28 +42,28 @@ function Chat() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setInput('');
-
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: input, sender: 'user', sentTime: currentTime },
     ]);
-
-    const response = generateResponse(input);
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { text: response, sender: 'chatbot', sentTime: currentTime },
-    ]);
-
-    const conversation = document.getElementById('conversation');
-    conversation.scrollTop = conversation.scrollHeight;
+    try {
+      const response = await axios.get(`/bot/${userId}/conversation?prompt=${input}`);
+      const chatbotReply = response.data;
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: chatbotReply, sender: 'chatbot', sentTime: currentTime },
+      ]);
+      // Scroll to the bottom of the conversation
+      const conversation = document.getElementById('conversation');
+      conversation.scrollTop = conversation.scrollHeight;
+    } catch (error) {
+      console.error('API request error:', error);
+    }
   };
 
   const generateResponse = (input) => {
     const responses = [
-      "Hello, how can I help you today? 😊",
-      "I'm sorry, I didn't understand your question. Could you please rephrase it? 😕",
       // ... (other responses)
     ];
     return responses[Math.floor(Math.random() * responses.length)];
@@ -146,5 +144,4 @@ function Chat() {
     </div>
   );
 }
-
 export default Chat;
