@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import './Chat.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Chat() {
+function Chat({userId}) {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([{ text: "Hi, my name is Helen! 👋 it's great to see you!", sender: "chatbot" }]);
   const [socialRecommendations, setSocialRecommendations] = useState('');
@@ -44,23 +46,31 @@ function Chat() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setInput('');
-
+  
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
+  
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: input, sender: 'user', sentTime: currentTime },
     ]);
-
-    const response = generateResponse(input);
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { text: response, sender: 'chatbot', sentTime: currentTime },
-    ]);
-
+  
+    try {
+      const response = await axios.get(`/bot/${userId}/conversation?prompt=${input}`);
+      // Process the response and extract the chatbot's reply
+      const chatbotReply = response.data; // Modify this according to your API response structure
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: chatbotReply, sender: 'chatbot', sentTime: currentTime },
+      ]);
+    } catch (error) {
+      // Handle the API request error here, e.g., show an error message to the user
+      console.error('API request error:', error);
+    }
+  
     const conversation = document.getElementById('conversation');
     conversation.scrollTop = conversation.scrollHeight;
   };
+  
 
   const generateResponse = (input) => {
     const responses = [
