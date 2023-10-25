@@ -13,7 +13,6 @@ public class ChatBotService {
 
     @Autowired
     ChatBotRepository chatBotRepository;
-//store the
 
 
     public Chatbot createChatbox() {

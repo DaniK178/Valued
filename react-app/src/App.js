@@ -18,7 +18,6 @@ function App() {
   const [disabilityRecommendations, setDisabilityRecommendations] = useState('');
 
   useEffect(() => {
-    // Fetch social recommendations
     fetch(`http://localhost:8080/bot/get-social-recommendations`)
       .then((response) => response.text())
       .then((data) => {
@@ -27,7 +26,6 @@ function App() {
       .catch((error) => {
         console.error('Error fetching social recommendations:', error);
       });
-    //  learning recommendations
     fetch(`http://localhost:8080/bot/get-learning-recommendations`)
       .then((response) => response.text())
       .then((data) => {
@@ -36,7 +34,6 @@ function App() {
       .catch((error) => {
         console.error('Error fetching learning recommendations:', error);
       });
-    //  disability recommendations
     fetch(`http://localhost:8080/bot/get-disability-recommendations`)
       .then((response) => response.text())
       .then((data) => {

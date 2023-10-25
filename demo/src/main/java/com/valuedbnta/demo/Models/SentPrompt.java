@@ -26,7 +26,6 @@ public class SentPrompt {
     @ManyToOne (cascade = CascadeType.PERSIST)
     @JoinColumn(name ="chatbot_id")
     @JsonIgnore
-//    @JsonIgnoreProperties({"prompts"})
     private Chatbot chatbot;
 
     @Column (length = 4000, name = "question")
@@ -36,14 +35,12 @@ public class SentPrompt {
     private String response;
 
 
-   // private LocalDate dateSent;
 
     public SentPrompt(){}
 
     public SentPrompt(String question, String response) {
         this.question = question;
         this.response = response;
-//        this.dateSent = dateSent;
     }
 
     public String getQuestion() {
@@ -78,11 +75,4 @@ public class SentPrompt {
         this.response = response;
     }
 
-    //    public LocalDate getDateSent() {
-//        return dateSent;
-//    }
-//
-//    public void setDateSent(LocalDate dateSent) {
-//        this.dateSent = dateSent;
-//    }
 }

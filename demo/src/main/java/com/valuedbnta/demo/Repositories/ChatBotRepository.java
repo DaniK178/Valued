@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatBotRepository extends JpaRepository<Chatbot, Long> {
-//sent obejct //conver
 }

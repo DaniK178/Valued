@@ -14,15 +14,12 @@ public class PromptService {
     @Autowired
     private PromptRepository promptRepository;
 
-//private  List<String> storedPrompts = new ArrayList<>();
 
 
     public void storeUserPrompt(SentPrompt userPrompt) {
         promptRepository.save(userPrompt);
-       // storedPrompts.add(userPrompt);
     }
 
-    //get  stored prompts by userid?
     public List<String> getStoredPrompts(){
      List<SentPrompt> sentPrompts =  promptRepository.findAll();
      List<String> storedPrompts = new ArrayList<>();
@@ -48,12 +45,4 @@ public class PromptService {
     public List<SentPrompt> getSentPrompts(){
         return promptRepository.findAll();
     }
-
-
-
-
-    //get stored prompts by employeeId
-
-    //i could filter out here or in the controller
-
 }

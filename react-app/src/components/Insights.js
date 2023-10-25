@@ -3,7 +3,6 @@ import './Insights.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement } from 'chart.js';
 import { Bar, Doughnut } from 'react-chartjs-2';
-//import { Doughnut } from "react-chartjs-2";
 import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement);
 function Insights() {

@@ -10,7 +10,6 @@ function Chat() {
   const [disabilityRecommendations, setDisabilityRecommendations] = useState('');
 
   useEffect(() => {
-    // Fetch social recommendations
     fetch(`http://localhost:8080/bot/get-social-recommendations`)
       .then((response) => response.text())
       .then((data) => {
@@ -19,7 +18,6 @@ function Chat() {
       .catch((error) => {
         console.error('Error fetching social recommendations:', error);
       });
-    //  learning recommendations
     fetch(`http://localhost:8080/bot/get-learning-recommendations`)
       .then((response) => response.text())
       .then((data) => {
@@ -28,7 +26,7 @@ function Chat() {
       .catch((error) => {
         console.error('Error fetching learning recommendations:', error);
       });
-    //  disability recommendations
+      
     fetch(`http://localhost:8080/bot/get-disability-recommendations`)
       .then((response) => response.text())
       .then((data) => {
@@ -62,43 +60,6 @@ function Chat() {
     }
     setInput('');
   };
-
-
-
-
-
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   setInput('');
-  //   const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  //   setMessages((prevMessages) => [
-  //     ...prevMessages,
-  //     { text: input, sender: 'user', sentTime: currentTime },
-  //   ]);
-  
-  //   try {
-  //     const response = await fetch(`http://localhost:8080/bot/conversation?prompt=${input}`);
-      
-  //     if (response.ok) {
-  //       const chatbotReply = await response.json();
-  //       setMessages((prevMessages) => [
-  //         ...prevMessages,
-  //         { text: chatbotReply, sender: 'chatbot', sentTime: currentTime },
-  //       ]);
-  //     } else {
-  //       // Handle the error here
-  //       console.error('API request error:', response.status, response.statusText);
-  //     }
-  
-  //     // Scroll to the bottom of the conversation
-  //     const conversation = document.getElementById('conversation');
-  //     conversation.scrollTop = conversation.scrollHeight;
-  //   } catch (error) {
-  //     console.error('Fetch error:', error);
-  //   }
-  // };
-
 
   const generateResponse = (input) => {
     const responses = [
