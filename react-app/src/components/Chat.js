@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Chat.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
