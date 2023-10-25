@@ -1,6 +1,8 @@
 .chat-body {
-  margin-top: 6rem; 
-  margin-bottom: 2rem;
+  margin-top: 9rem; 
+  margin-bottom: 5rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
 }
 
 .chatbot-container {

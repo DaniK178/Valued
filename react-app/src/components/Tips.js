@@ -8,13 +8,13 @@ import support from '../Images/tips3.jpg';
 function Tips({ socialRecommendations, learningRecommendations, disabilityRecommendations }) {
   return (
     <div className="tips-body">
-      <div className="container-fluid mt-4">
+      <div className="container-fluid mt-4 d-flex flex-column">
         <div className="card rounded">
           <div className="card-body">
             <div className="introduction card-body text-center">
               <h2>TIPS</h2>
               <p style={{ padding: '10px' }}>
-                Below you will find some recommendations based on our conversation.
+                Please hover over the cards to reveal your personalised recommendations.
               </p>
               <hr />
               <div className="content d-flex justify-content-center">

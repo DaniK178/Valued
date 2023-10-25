@@ -4,7 +4,7 @@ import './Chat.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function Chat() {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ text: "Hi, my name is Helen! :wave: it's great to see you!", sender: "chatbot" }]);
+  const [messages, setMessages] = useState([{ text: "Hey, it's great to see you!", sender: "chatbot" }]);
   const [socialRecommendations, setSocialRecommendations] = useState('');
   const [learningRecommendations, setLearningRecommendations] = useState('');
   const [disabilityRecommendations, setDisabilityRecommendations] = useState('');
@@ -113,13 +113,13 @@ function Chat() {
         <div className="card rounded">
           <div className="card-body">
             <div className="introduction card-body text-center">
-              <h2>MEET HELEN</h2>
-              <p style={{padding:'10px'}}>A summary of the key observations from your chat with Helen.</p>
-              <hr />
+              <h2>HELLO</h2>
+              <p style={{padding:'10px'}}> I'm Helen, your friendly mentor here to help you with any questions or guidance you need. Feel free to ask about anything! 😊  </p>
+              <hr /> 
               <div className="container-lg my-4">
                 <div className="row">
-                  <div className="col-md-8">
-                    <div className="chatbot-container">
+                  <div className="col-md-8 mx-auto">
+                    <div className="chatbot-container text-center">
                       <div id="header">
                         <h1>Talk to me</h1>
                       </div>
@@ -143,33 +143,6 @@ function Chat() {
                             <button className="btn btn-primary custom-save-button" id="submit-button" type="submit">Send</button>
                           </message-container>
                         </form>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="section-right">
-                      <div className="notes-section">
-                        <h3>Saved Chat History</h3>
-                        <hr />
-                        <div className="table-responsive">
-                          <table className="table table-light">
-                            <thead>
-                              <tr>
-                                <th scope="col">Date</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Snippet</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">1/12/23</th>
-                                <td>11:23</td>
-                                <td>Otto</td>
-                              </tr>
-                              {/* ... (other rows) */}
-                            </tbody>
-                          </table>
-                        </div>
                       </div>
                     </div>
                   </div>

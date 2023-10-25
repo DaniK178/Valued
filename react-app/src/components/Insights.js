@@ -58,7 +58,7 @@ function Insights() {
                       <div className="saved-notes-section">
                         <h2>Saved Notes</h2>
                         <div className="saved-notes"></div>
-                        <button onClick={saveNote} style={{ marginTop: '1rem' }} className="btn btn-primary custom-save-button">Save Note</button>
+                       <button onClick={saveNote} style={{ marginTop: '1rem' }} className="btn btn-primary custom-save-button">Save Note</button>
                       </div>
                     </div>
                     <div className="col-md-4 mx-auto">
