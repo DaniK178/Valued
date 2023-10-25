@@ -47,13 +47,11 @@ public class CustomBotController {
 
     private String recommendationSetup;
 
-    @GetMapping("/{userId}/conversation")
-    public ResponseEntity<ChatGPTResponse> chat(@PathVariable Long userId, @RequestParam("prompt") String prompt) {
+    @GetMapping("/conversation")
+    public ResponseEntity<ChatGPTResponse> chat(@RequestParam("prompt") String prompt) {
         //SET-UP CHATBOX:
 
-        Employee employee = employeeService.getEmployeeById(userId);
-
-       if  (employee.getSentPrompts().isEmpty()) {
+       if  (promptService.getSentPrompts().isEmpty()) {
            Chatbot newBot = chatBotService.createChatbox();
 
            SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are called the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
@@ -61,26 +59,18 @@ public class CustomBotController {
            //save to chatbot
            setup.setChatBot(newBot);
            newBot.addSentPromptToChatBot(setup);
-           //save to employee
-           setup.setEmployee(employee);
-           employee.getSentPrompts().add(setup);
            //save to database
            promptService.storeUserPrompt(setup);
-           employeeService.saveEmployee(employee);
+           chatBotService.saveChatBot(newBot);
        }
 
-       List<SentPrompt> prompts =  promptService.getSentPromptsByEmployeeId(employee.getId());
+       List<SentPrompt> prompts =  promptService.getSentPrompts();
 
        Long chatBotId = null;
        SentPrompt firstSentPrompt = prompts.get(0);
        chatBotId = firstSentPrompt.getChatbot().getId();
 
         Chatbot chatBot = chatBotService.getChatBotById(chatBotId);
-
-        boolean hasUserAccess = chatBot.getConversationHistory().stream()
-                .anyMatch(sentPrompt -> sentPrompt.getEmployee().getId().equals(userId));
-
-        if (hasUserAccess) {
             String conversationHistory = chatBot.getConversationHistoryAsString();
 
             //GENERATE REQUEST AND RESPONSE
@@ -95,27 +85,22 @@ public class CustomBotController {
             newConversation.setChatBot(chatBot);
             chatBot.addSentPromptToChatBot(newConversation);
 
-            //STORE TO USER ID
-            newConversation.setEmployee(employee);
-            employee.getSentPrompts().add(newConversation);
-
             //SAVE TO DATABASES
-            employeeService.saveEmployee(employee);
             chatBotService.saveChatBot(chatBot);
             promptService.storeUserPrompt(newConversation);
 
             return ResponseEntity.ok(chatGPTResponse);
-        } else {
-
-            Message message = new Message("user", " Error, this may be because this user does not have access to this chatbot, please check the chatbot ID avaliable to yuo user:");
-            ChatGPTResponse.Choice errorChoice =  new ChatGPTResponse.Choice(0,message);
-
-            List<ChatGPTResponse.Choice> choices = new ArrayList<>();
-            choices.add(errorChoice);
-
-            ChatGPTResponse errorResponse = new ChatGPTResponse(choices);
-            return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
-        }
+//        } else {
+//
+//            Message message = new Message("user", " Error, this may be because this user does not have access to this chatbot, please check the chatbot ID avaliable to yuo user:");
+//            ChatGPTResponse.Choice errorChoice =  new ChatGPTResponse.Choice(0,message);
+//
+//            List<ChatGPTResponse.Choice> choices = new ArrayList<>();
+//            choices.add(errorChoice);
+//
+//            ChatGPTResponse errorResponse = new ChatGPTResponse(choices);
+//            return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+//        }
 
     }
 }

@@ -35,10 +35,10 @@ import java.util.List;
         @Autowired
         private PromptService promptService;
 
-    @GetMapping("/{userId}/get-social-recommendations")
-    public String getSocialRecommendations(@PathVariable Long userId) {
+    @GetMapping("/get-social-recommendations")
+    public String getSocialRecommendations() {
 
-        List<String> storedPrompts = promptService.getStoredPromptsByEmployeeId(userId);
+        List<String> storedPrompts = promptService.getStoredPrompts();
         String socialRequest = "Hello, from now on you will be a workplace chatbox that is supportive and gives recommendations to the employee based on the prompts listed below, the recommendation will fall under these three categories: \"social\", \"learning and development\" and \"disability support\".\n" +
                 "I will be the employee. Please list up to 7 social recommendations you would make from the following prompts. Your response should ONLY contain these recommendations and nothing else. Display them in a numbered list " + storedPrompts;
         ChatGPTRequest combinedPromptRequest = new ChatGPTRequest(model, socialRequest);
@@ -47,9 +47,9 @@ import java.util.List;
         return socialGPTResponse.getChoices().get(0).getMessage().getContent();
     }
 
-    @GetMapping("/{userId}/get-learning-recommendations")
-    public String getLearningAndDevelopmentRecommendations(@PathVariable Long userId) {
-        List<String> storedPrompts = promptService.getStoredPromptsByEmployeeId(userId);
+    @GetMapping("/get-learning-recommendations")
+    public String getLearningAndDevelopmentRecommendations() {
+        List<String> storedPrompts = promptService.getStoredPrompts();
         String socialRequest = "Hello, from now on you will be a workplace chatbox that is supportive and gives recommendations to the employee based on the prompts listed below, the recommendation will fall under these three categories: \"social\", \"learning and development\" and \"disability support\".\n" +
                 "I will be the employee. Only list up to 7 learning and development recommendations you would make from the following prompts. Your response should ONLY contain these recommendations and nothing else. Display them in a numbered list " + storedPrompts;
         ChatGPTRequest combinedPromptRequest = new ChatGPTRequest(model, socialRequest);
@@ -58,9 +58,9 @@ import java.util.List;
         return socialGPTResponse.getChoices().get(0).getMessage().getContent();
     }
 
-    @GetMapping("/{userId}/get-disability-recommendations")
-    public String getDisabilityRecommendations(@PathVariable Long userId){
-        List<String> storedPrompts = promptService.getStoredPromptsByEmployeeId(userId);
+    @GetMapping("/get-disability-recommendations")
+    public String getDisabilityRecommendations(){
+        List<String> storedPrompts = promptService.getStoredPrompts();
         String socialRequest = "Hello, from now on you will be a workplace chatbox that is supportive and gives recommendations around support for disabilities to the employee based on the prompts listed below. I will be the employee. List up to 7 recommendations you would make from the following prompts. Your response should ONLY contain these disability recommendations. Display them in a numbered list " + storedPrompts;
         ChatGPTRequest combinedPromptRequest = new ChatGPTRequest(model, socialRequest);
         ChatGPTResponse socialGPTResponse = template.postForObject(apiURL,combinedPromptRequest,ChatGPTResponse.class);

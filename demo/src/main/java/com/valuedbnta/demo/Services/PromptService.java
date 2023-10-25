@@ -45,6 +45,10 @@ public class PromptService {
         return promptRepository.findByEmployeeId(employeeId);
     }
 
+    public List<SentPrompt> getSentPrompts(){
+        return promptRepository.findAll();
+    }
+
 
 
 
