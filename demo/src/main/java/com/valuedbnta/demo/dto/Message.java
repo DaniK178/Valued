@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Message {
 
-    //who is accessing it
     private String role;
 
-    //the content - what you are searching for
     private String content;//prompt
 }

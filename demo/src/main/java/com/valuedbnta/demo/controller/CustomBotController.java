@@ -54,17 +54,14 @@ public class CustomBotController {
 
     @GetMapping("/conversation")
     public ResponseEntity<ChatGPTResponse> chat(@RequestParam("prompt") String prompt) {
-        //SET-UP CHATBOX:
 
        if  (promptService.getSentPrompts().isEmpty()) {
            Chatbot newBot = chatBotService.createChatbox();
 
            SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are name is Helen, you are the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
 
-           //save to chatbot
            setup.setChatBot(newBot);
            newBot.addSentPromptToChatBot(setup);
-           //save to database
            promptService.storeUserPrompt(setup);
            chatBotService.saveChatBot(newBot);
        }
@@ -78,40 +75,19 @@ public class CustomBotController {
         Chatbot chatBot = chatBotService.getChatBotById(chatBotId);
             String conversationHistory = chatBot.getConversationHistoryAsString();
 
-            //GENERATE REQUEST AND RESPONSE
             ChatGPTRequest request = new ChatGPTRequest(model, conversationHistory + prompt);
             ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
 
-            //ADD USER HISTORY
             String responseContent = chatGPTResponse.getChoices().get(0).getMessage().getContent();
             SentPrompt newConversation = new SentPrompt(prompt, responseContent);
 
-            //STORING HISTORY
             newConversation.setChatBot(chatBot);
             chatBot.addSentPromptToChatBot(newConversation);
 
-            //SAVE TO DATABASES
             chatBotService.saveChatBot(chatBot);
             promptService.storeUserPrompt(newConversation);
 
             return ResponseEntity.ok(chatGPTResponse);
-//        } else {
-//
-//            Message message = new Message("user", " Error, this may be because this user does not have access to this chatbot, please check the chatbot ID avaliable to yuo user:");
-//            ChatGPTResponse.Choice errorChoice =  new ChatGPTResponse.Choice(0,message);
-//
-//            List<ChatGPTResponse.Choice> choices = new ArrayList<>();
-//            choices.add(errorChoice);
-//
-//            ChatGPTResponse errorResponse = new ChatGPTResponse(choices);
-//            return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
-//        }
 
     }
 }
-
-
-
-
-
-//}

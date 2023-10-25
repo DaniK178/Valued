@@ -75,15 +75,6 @@ public class Employee {
         this.manager = manager;
     }
 
-//    public List<SentPrompt> getSentMessages() {
-//        return sentPrompts;
-//    }
-//    //or use sent prompts calls
-//
-//    public void setSentMessages(List<SentPrompt> sentMessages) {
-//        this.sentPrompts = sentMessages;
-//    }
-
     public String getPassword() {
         return password;
     }
@@ -108,36 +99,3 @@ public class Employee {
         this.sentPrompts = sentPrompts;
     }
 }
-
-
-
-
-
-
-
-//Other methods to not be used
-//    public List<String> getSentPrompts() {
-//        return sentPrompts;
-//    }
-//
-//    public void setSentPrompts(List<String> sentPrompts) {
-//        this.sentPrompts = sentPrompts;
-//    }
-
-//    public List<Chatbox> getChatboxes() {
-//        return chatboxes;
-//    }
-//
-//    public void setChatboxes(List<Chatbox> chatboxes) {
-//        this.chatboxes = chatboxes;
-//    }
-
-//    public void addChatBox(Chatbox chatbox){
-//        this.chatboxes.add(chatbox);
-//        if (chatbox.getUser() !=this){
-//            chatbox.setUser(this);
-//        }
-//    }
-
-
-

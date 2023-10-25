@@ -38,13 +38,6 @@ public class EmployeeController {
 
         newEmployee =  employeeService.createEmployee(newEmployee);
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
-//      Request Body:
-//            {
-//                    "name": "John Doe",
-//                    "email": "john.doe@example.com",
-//                    "password": "password123",
-//                    "manager": "Manager Name"
-//            }
     }
 
     @GetMapping ("/all")
@@ -78,10 +71,7 @@ public class EmployeeController {
         employeeService.saveEmployee(existingEmployee);
 
         return ResponseEntity.ok("Your password has been updated successfully");
-        //      RequestBody
-//            {
-//                "password": "newPassword123"
-//            }
+
     }
 }
 
