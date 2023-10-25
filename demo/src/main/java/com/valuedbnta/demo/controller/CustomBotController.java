@@ -9,19 +9,21 @@ import com.valuedbnta.demo.Services.EmployeeService;
 import com.valuedbnta.demo.Services.PromptService;
 import com.valuedbnta.demo.dto.ChatGPTRequest;
 import com.valuedbnta.demo.dto.ChatGPTResponse;
+import com.valuedbnta.demo.dto.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //add https to this
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/bot")
 public class CustomBotController {
 
@@ -45,88 +47,71 @@ public class CustomBotController {
 
     private String recommendationSetup;
 
-//    private Chatbot chatBot = new Chatbot();
-
-    //Do we need to PostCHatbox and PostUser first????
-//    @PostMapping("/employee")
-//    public Employee newEmployee (){
-//       return
-//    }
-
-    //it post the first request every time
-    //it doesnt remember post history
-
-
-    //look into seeting up system insteasd
-
-    @PostMapping("/chatbot")
-    public Chatbot createChatBot(){
-
-        Chatbot newBot = chatBotService.createChatbox();
-
-        SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are called the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
-
-        setup.setChatBot(newBot);
-       //this stores the prompts for recommendations
-
-        newBot.addSentPromptToChatBot(setup);
-        promptService.storeUserPrompt(setup);
-      //  newBot.getConversationHistory().add(setup);
-       return newBot;
+    @GetMapping("/id ")
+    public ResponseEntity<Long> getChatBotId(){
+       return new ResponseEntity<>(chatBotService.getChatbot().getId(), HttpStatus.FOUND);
     }
 
-
     @GetMapping("/conversation")
-    public ChatGPTResponse chat(@RequestParam("chatBotId") Long chatbotId,@RequestParam("prompt") String prompt) {
+    public ResponseEntity<ChatGPTResponse> chat(@RequestParam("prompt") String prompt) {
         //SET-UP CHATBOX:
 
-        //get specific chatbox
-        Chatbot chatBot = chatBotService.getChatBotById(chatbotId);
-        //get conversation history - does this data persists??
-//        String conversationHistory = chatBot.getConversationHistory().toString();
-        String conversationHistory = chatBot.getConversationHistoryAsString();
+       if  (promptService.getSentPrompts().isEmpty()) {
+           Chatbot newBot = chatBotService.createChatbox();
+
+           SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are name is Helen, you are the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
+
+           //save to chatbot
+           setup.setChatBot(newBot);
+           newBot.addSentPromptToChatBot(setup);
+           //save to database
+           promptService.storeUserPrompt(setup);
+           chatBotService.saveChatBot(newBot);
+       }
+
+       List<SentPrompt> prompts =  promptService.getSentPrompts();
+
+       Long chatBotId = null;
+       SentPrompt firstSentPrompt = prompts.get(0);
+       chatBotId = firstSentPrompt.getChatbot().getId();
+
+        Chatbot chatBot = chatBotService.getChatBotById(chatBotId);
+            String conversationHistory = chatBot.getConversationHistoryAsString();
 
             //GENERATE REQUEST AND RESPONSE
-          //  promptService.storeUserPrompt(prompt);
             ChatGPTRequest request = new ChatGPTRequest(model, conversationHistory + prompt);
             ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
 
             //ADD USER HISTORY
-        // get the string of the chatgpt response
             String responseContent = chatGPTResponse.getChoices().get(0).getMessage().getContent();
-            //and the question and answer to a Sent Prompt object
-            SentPrompt newConversation = new SentPrompt(prompt,responseContent);
+            SentPrompt newConversation = new SentPrompt(prompt, responseContent);
 
-        //STORING HISTORY
-
-
-            //set the new chat to a chat bot
+            //STORING HISTORY
             newConversation.setChatBot(chatBot);
-            //add the new prompt to the chatbot
-             chatBot.addSentPromptToChatBot(newConversation);
+            chatBot.addSentPromptToChatBot(newConversation);
 
-             chatBotService.saveChatBot(chatBot);
-            //add to conversation history
-          //  chatBot.getConversationHistory().add(newConversation);
+            //SAVE TO DATABASES
+            chatBotService.saveChatBot(chatBot);
+            promptService.storeUserPrompt(newConversation);
 
-        //store the prompt to use for recommendations
-        promptService.storeUserPrompt(newConversation);
+            return ResponseEntity.ok(chatGPTResponse);
+//        } else {
+//
+//            Message message = new Message("user", " Error, this may be because this user does not have access to this chatbot, please check the chatbot ID avaliable to yuo user:");
+//            ChatGPTResponse.Choice errorChoice =  new ChatGPTResponse.Choice(0,message);
+//
+//            List<ChatGPTResponse.Choice> choices = new ArrayList<>();
+//            choices.add(errorChoice);
+//
+//            ChatGPTResponse errorResponse = new ChatGPTResponse(choices);
+//            return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+//        }
 
-            return chatGPTResponse;
-        }
-
-
-        @PostMapping("/user")
-    public Employee employee (){
-        Employee newEmployee =  employeeService.createEmployee();
-        return newEmployee;
-
-        }
-
-       // @PutMapping("/changePassword");
-
-
-
-
-
+    }
 }
+
+
+
+
+
+//}

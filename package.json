@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "boostrap": "^2.0.0"
+    "@mui/icons-material": "^5.14.15",
+    "boostrap": "^2.0.0",
+    "chart.js": "^4.4.0",
+    "react-chartjs-2": "^5.2.0"
   }
 }

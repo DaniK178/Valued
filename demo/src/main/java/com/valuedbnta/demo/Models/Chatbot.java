@@ -13,18 +13,11 @@ public class Chatbot {
     private Long id;
 
 
- //   private List<SentPrompt> sentPrompts;
-
     @OneToMany(mappedBy = "chatbot", fetch = FetchType.EAGER)
     private List<SentPrompt> conversationHistory;
 
-    // private HashMap<SentPrompt, String> conversationHistory;
-    // private List<String> responses;
-
     public Chatbot() {
-     //   this.sentPrompts = new ArrayList<>();
         this.conversationHistory = new ArrayList<>();
-//        this.conversationHistory = new HashMap<>();
     }
 
     public void addSentPromptToChatBot(SentPrompt sentPrompt){
@@ -35,7 +28,15 @@ public class Chatbot {
         sentPrompt.setChatBot(this); // Set the chatbot reference in the SentPrompt
     }
 
-//    public List<SentPrompt> getConversationHistory() {
+    public List<SentPrompt> getConversationHistory() {
+        return conversationHistory;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    //    public List<SentPrompt> getConversationHistory() {
 //        if (conversationHistory == null) {
 //            conversationHistory = new ArrayList<>();
 //        }
@@ -55,8 +56,8 @@ public class Chatbot {
         StringBuilder historyBuilder = new StringBuilder();
 
         for (SentPrompt sentPrompt : conversationHistory) {
-            historyBuilder.append("Question: ").append(sentPrompt.getQuestion()).append("\n");
-            historyBuilder.append("Response: ").append(sentPrompt.getResponse()).append("\n\n");
+            historyBuilder.append("").append(sentPrompt.getQuestion()).append("\n");
+            historyBuilder.append("").append(sentPrompt.getResponse()).append("\n\n");
         }
 
         return historyBuilder.toString();

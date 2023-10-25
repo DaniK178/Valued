@@ -22,11 +22,11 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        Employee employee = new Employee("Danielle","adacda", "cwcwc");
-
-        SentPrompt prompt = new SentPrompt("my name is Danielle","hi Danielle");
-
-        Chatbot chatbot = new Chatbot();
+//        Employee employee = new Employee("Danielle","adacda", "cwcwc");
+//
+//        SentPrompt prompt = new SentPrompt("my name is Danielle","hi Danielle");
+//
+//        Chatbot chatbot = new Chatbot();
 
 
 

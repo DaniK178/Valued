@@ -32,5 +32,28 @@ public class PromptService {
         return storedPrompts;
     }
 
+    public List<String> getStoredPromptsByEmployeeId(Long employeeId){
+        List<SentPrompt> sentPrompts =  promptRepository.findByEmployeeId(employeeId);
+        List<String> storedPrompts = new ArrayList<>();
+        for (SentPrompt prompt:  sentPrompts ) {
+            storedPrompts.add(prompt.getQuestion() );
+        }
+        return storedPrompts;
+    }
+
+    public List<SentPrompt> getSentPromptsByEmployeeId(Long employeeId){
+        return promptRepository.findByEmployeeId(employeeId);
+    }
+
+    public List<SentPrompt> getSentPrompts(){
+        return promptRepository.findAll();
+    }
+
+
+
+
+    //get stored prompts by employeeId
+
+    //i could filter out here or in the controller
 
 }

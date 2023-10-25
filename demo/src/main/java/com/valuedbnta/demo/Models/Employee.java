@@ -28,6 +28,9 @@ public class Employee {
     @Column(name = "manager")
     private String manager;
 
+    @Column(name = "job_title")
+    private String jobTitle;
+
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"employee"})
     private List<SentPrompt> sentPrompts;
@@ -35,11 +38,17 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, String email, String manager) {
+    public Employee(String name, String email,String password, String manager, String jobTitle) {
         this.name = name;
         this.email = email;
+        this.password = password;
         this.manager = manager;
+        this.jobTitle = jobTitle;
         this.sentPrompts = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -81,6 +90,14 @@ public class Employee {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 
     public List<SentPrompt> getSentPrompts() {

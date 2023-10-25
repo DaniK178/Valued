@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import './Chat.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-function Chat({userId}) {
+function Chat() {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ text: "Hi, my name is Helen! 👋 it's great to see you!", sender: "chatbot" }]);
+  const [messages, setMessages] = useState([{ text: "Hey, it's great to see you!", sender: "chatbot" }]);
   const [socialRecommendations, setSocialRecommendations] = useState('');
   const [learningRecommendations, setLearningRecommendations] = useState('');
   const [disabilityRecommendations, setDisabilityRecommendations] = useState('');
 
   useEffect(() => {
     // Fetch social recommendations
-    fetch('http://localhost:8080/bot/get-social-recommendations')
+    fetch(`http://localhost:8080/bot/get-social-recommendations`)
       .then((response) => response.text())
       .then((data) => {
         setSocialRecommendations(data);
@@ -21,9 +19,8 @@ function Chat({userId}) {
       .catch((error) => {
         console.error('Error fetching social recommendations:', error);
       });
-
     //  learning recommendations
-    fetch('http://localhost:8080/bot/get-learning-recommendations')
+    fetch(`http://localhost:8080/bot/get-learning-recommendations`)
       .then((response) => response.text())
       .then((data) => {
         setLearningRecommendations(data);
@@ -31,9 +28,8 @@ function Chat({userId}) {
       .catch((error) => {
         console.error('Error fetching learning recommendations:', error);
       });
-
     //  disability recommendations
-    fetch('http://localhost:8080/bot/get-disability-recommendations')
+    fetch(`http://localhost:8080/bot/get-disability-recommendations`)
       .then((response) => response.text())
       .then((data) => {
         setDisabilityRecommendations(data);
@@ -45,37 +41,67 @@ function Chat({userId}) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setInput('');
-  
+   
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: input, sender: 'user', sentTime: currentTime },
     ]);
-  
     try {
-      const response = await axios.get(`/bot/${userId}/conversation?prompt=${input}`);
-      // Process the response and extract the chatbot's reply
-      const chatbotReply = response.data; // Modify this according to your API response structure
+      const response = await axios.get(`http://localhost:8080/bot/conversation?prompt=${input}`);
+      const chatbotReply = response.data;
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: chatbotReply, sender: 'chatbot', sentTime: currentTime },
+        { text: chatbotReply.choices[0].message.content, sender: 'chatbot', sentTime: currentTime },
       ]);
+      // Scroll to the bottom of the conversation
+      const conversation = document.getElementById('conversation');
+      conversation.scrollTop = conversation.scrollHeight;
     } catch (error) {
-      // Handle the API request error here, e.g., show an error message to the user
       console.error('API request error:', error);
     }
-  
-    const conversation = document.getElementById('conversation');
-    conversation.scrollTop = conversation.scrollHeight;
+    setInput('');
   };
+
+
+
+
+
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   setInput('');
+  //   const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  //   setMessages((prevMessages) => [
+  //     ...prevMessages,
+  //     { text: input, sender: 'user', sentTime: currentTime },
+  //   ]);
   
+  //   try {
+  //     const response = await fetch(`http://localhost:8080/bot/conversation?prompt=${input}`);
+      
+  //     if (response.ok) {
+  //       const chatbotReply = await response.json();
+  //       setMessages((prevMessages) => [
+  //         ...prevMessages,
+  //         { text: chatbotReply, sender: 'chatbot', sentTime: currentTime },
+  //       ]);
+  //     } else {
+  //       // Handle the error here
+  //       console.error('API request error:', response.status, response.statusText);
+  //     }
+  
+  //     // Scroll to the bottom of the conversation
+  //     const conversation = document.getElementById('conversation');
+  //     conversation.scrollTop = conversation.scrollHeight;
+  //   } catch (error) {
+  //     console.error('Fetch error:', error);
+  //   }
+  // };
+
 
   const generateResponse = (input) => {
     const responses = [
-      "Hello, how can I help you today? 😊",
-      "I'm sorry, I didn't understand your question. Could you please rephrase it? 😕",
       // ... (other responses)
     ];
     return responses[Math.floor(Math.random() * responses.length)];
@@ -87,13 +113,13 @@ function Chat({userId}) {
         <div className="card rounded">
           <div className="card-body">
             <div className="introduction card-body text-center">
-              <h2>MEET HELEN</h2>
-              <p style={{padding:'10px'}}>A summary of the key observations from your chat with Helen.</p>
-              <hr />
+              <h2>HELLO</h2>
+              <p style={{padding:'10px'}}> I'm Helen, your friendly mentor here to help you with any questions or guidance you need. Feel free to ask about anything! 😊  </p>
+              <hr /> 
               <div className="container-lg my-4">
                 <div className="row">
-                  <div className="col-md-8">
-                    <div className="chatbot-container">
+                  <div className="col-md-8 mx-auto">
+                    <div className="chatbot-container text-center">
                       <div id="header">
                         <h1>Talk to me</h1>
                       </div>
@@ -120,33 +146,6 @@ function Chat({userId}) {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-4">
-                    <div className="section-right">
-                      <div className="notes-section">
-                        <h3>Saved Chat History</h3>
-                        <hr />
-                        <div className="table-responsive">
-                          <table className="table table-light">
-                            <thead>
-                              <tr>
-                                <th scope="col">Date</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Snippet</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">1/12/23</th>
-                                <td>11:23</td>
-                                <td>Otto</td>
-                              </tr>
-                              {/* ... (other rows) */}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -156,5 +155,4 @@ function Chat({userId}) {
     </div>
   );
 }
-
 export default Chat;

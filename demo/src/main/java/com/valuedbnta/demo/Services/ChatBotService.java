@@ -21,7 +21,15 @@ public class ChatBotService {
         return chatBotRepository.save(chatbot);
     }
 
-    public Chatbot getChatBotById(Long chatBotId){
+    public Chatbot getChatbot() {
+        List<Chatbot> chatBots = chatBotRepository.findAll();
+        if (!chatBots.isEmpty()) {
+            return chatBots.get(0);
+        }
+        return null;
+    }
+
+        public Chatbot getChatBotById(Long chatBotId){
         return chatBotRepository.findById(chatBotId).orElse(null);
     }
 
