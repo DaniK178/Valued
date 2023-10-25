@@ -56,8 +56,8 @@ public class Chatbot {
         StringBuilder historyBuilder = new StringBuilder();
 
         for (SentPrompt sentPrompt : conversationHistory) {
-            historyBuilder.append("Question: ").append(sentPrompt.getQuestion()).append("\n");
-            historyBuilder.append("Response: ").append(sentPrompt.getResponse()).append("\n\n");
+            historyBuilder.append("").append(sentPrompt.getQuestion()).append("\n");
+            historyBuilder.append("").append(sentPrompt.getResponse()).append("\n\n");
         }
 
         return historyBuilder.toString();

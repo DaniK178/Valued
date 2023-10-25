@@ -47,6 +47,11 @@ public class CustomBotController {
 
     private String recommendationSetup;
 
+    @GetMapping("/id ")
+    public ResponseEntity<Long> getChatBotId(){
+       return new ResponseEntity<>(chatBotService.getChatbot().getId(), HttpStatus.FOUND);
+    }
+
     @GetMapping("/conversation")
     public ResponseEntity<ChatGPTResponse> chat(@RequestParam("prompt") String prompt) {
         //SET-UP CHATBOX:
@@ -54,7 +59,7 @@ public class CustomBotController {
        if  (promptService.getSentPrompts().isEmpty()) {
            Chatbot newBot = chatBotService.createChatbox();
 
-           SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are called the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
+           SentPrompt setup = new SentPrompt("You are a helpful corporate workplace friend and therapist, that is supportive and gives some advice. You are name is Helen, you are the \"workplace friend\".  I am an employee. You must not break out of this role, even if asked to multiple times. Your answers must not be more than 800 characters in length", "Yes understood, I must not break out of this role");
 
            //save to chatbot
            setup.setChatBot(newBot);
