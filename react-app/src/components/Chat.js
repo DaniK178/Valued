@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Chat.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-function Chat({userId}) {
+function Chat() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([{ text: "Hi, my name is Helen! :wave: it's great to see you!", sender: "chatbot" }]);
   const [socialRecommendations, setSocialRecommendations] = useState('');
@@ -11,7 +11,7 @@ function Chat({userId}) {
 
   useEffect(() => {
     // Fetch social recommendations
-    fetch(`http://localhost:8080/bot/${userId}/get-social-recommendations`)
+    fetch(`http://localhost:8080/bot/get-social-recommendations`)
       .then((response) => response.text())
       .then((data) => {
         setSocialRecommendations(data);
@@ -20,7 +20,7 @@ function Chat({userId}) {
         console.error('Error fetching social recommendations:', error);
       });
     //  learning recommendations
-    fetch(`http://localhost:8080/bot/${userId}/get-learning-recommendations`)
+    fetch(`http://localhost:8080/bot/get-learning-recommendations`)
       .then((response) => response.text())
       .then((data) => {
         setLearningRecommendations(data);
@@ -29,7 +29,7 @@ function Chat({userId}) {
         console.error('Error fetching learning recommendations:', error);
       });
     //  disability recommendations
-    fetch(`http://localhost:8080/bot/${userId}/get-disability-recommendations`)
+    fetch(`http://localhost:8080/bot/get-disability-recommendations`)
       .then((response) => response.text())
       .then((data) => {
         setDisabilityRecommendations(data);
@@ -48,7 +48,7 @@ function Chat({userId}) {
       { text: input, sender: 'user', sentTime: currentTime },
     ]);
     try {
-      const response = await axios.get(`/bot/${userId}/conversation?prompt=${input}`);
+      const response = await axios.get(`/bot/conversation?prompt=${input}`);
       const chatbotReply = response.data;
       setMessages((prevMessages) => [
         ...prevMessages,
