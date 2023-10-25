@@ -11,7 +11,7 @@ function Chat({userId}) {
 
   useEffect(() => {
     // Fetch social recommendations
-    fetch('http://localhost:8080/bot/get-social-recommendations')
+    fetch(`http://localhost:8080/bot/${userId}/get-social-recommendations`)
       .then((response) => response.text())
       .then((data) => {
         setSocialRecommendations(data);
@@ -20,7 +20,7 @@ function Chat({userId}) {
         console.error('Error fetching social recommendations:', error);
       });
     //  learning recommendations
-    fetch('http://localhost:8080/bot/get-learning-recommendations')
+    fetch(`http://localhost:8080/bot/${userId}/get-learning-recommendations`)
       .then((response) => response.text())
       .then((data) => {
         setLearningRecommendations(data);
@@ -29,7 +29,7 @@ function Chat({userId}) {
         console.error('Error fetching learning recommendations:', error);
       });
     //  disability recommendations
-    fetch('http://localhost:8080/bot/get-disability-recommendations')
+    fetch(`http://localhost:8080/bot/${userId}/get-disability-recommendations`)
       .then((response) => response.text())
       .then((data) => {
         setDisabilityRecommendations(data);

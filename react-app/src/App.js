@@ -23,7 +23,7 @@ function App() {
             <LogIn />
           </Route>
           <Route path="/chat">
-            <Chat />
+            <Chat/>
           </Route>
           <Route path="/tips">
             <Tips />
